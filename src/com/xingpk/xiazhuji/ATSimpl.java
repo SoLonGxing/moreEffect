@@ -11,24 +11,28 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     private IO input;
     private IO output;
     private List<ACS> acsList;
-    private String filePath;
     private String serviceName;
+    private String packagePath;
+    public List<ACS> getAcsList() {
+        return acsList;
+    }
 
+    public void setAcsList(List<ACS> acsList) {
 
+        this.acsList = acsList;
+    }
 
-    public ATSimpl(String name){
+    public ATSimpl(String name, String packagePath){
         this.name = name;
+        this.packagePath = packagePath;
         setServiceName(name.substring(0,1).toLowerCase() + name.substring(1,name.length()));
 
         //建立输入输出
         //TODO 是否要加"ATS"在结尾
-        AtsIO input = new AtsIO(name + "Input");
-        AtsIO output = new AtsIO(name + "Output");
+        this.input = new AtsIO(name + "Input");
+        this.output = new AtsIO(name + "Output");
 
 
-    }
-    public void setFilePath(String path){
-        this.filePath = path;
     }
 
     public String getServiceName() {
@@ -41,7 +45,10 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
     @Override
-    public void printAtsClass() {
+    public String printAtsClass() {
+        String classStream =null;
 
+
+        return classStream;
     }
 }

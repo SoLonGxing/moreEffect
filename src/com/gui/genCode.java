@@ -2,12 +2,18 @@ package com.gui;
 
 
 
+
+import com.xingpk.xiazhuji.ACSimpl;
 import com.xingpk.xiazhuji.ATSimpl;
 
+
+import com.xingpk.xiazhuji.intr.ACS;
+import com.xingpk.xiazhuji.xiazhujiRoot;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class genCode {
     private JPanel panel1;
@@ -22,22 +28,27 @@ public class genCode {
     private JLabel AcsName;
     private JPanel jpbutton;
     private JComboBox comboBox1;
+    private JTextField txtPackage;
 
 
     public genCode() {
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 String mainName = textAtsName.getText();//调用方名称
                 String[] subName = textArea1.getText().split("/n");//被调用方名称
 
-                ATSimpl ats = new ATSimpl(mainName);
-
+                ATSimpl ats = new ATSimpl(mainName, txtPackage.getText());
+                List<ACS> acsList = null;
                 for(String sub: subName){
                     System.out.println(sub);
-
+                     acsList.add(new ACSimpl(sub));
                 }
+
+                ats.setAcsList(acsList);
+                xiazhujiRoot xzjr = new xiazhujiRoot();
+                xzjr.setAts(ats);
+
                 super.mouseClicked(e);
             }
         });
