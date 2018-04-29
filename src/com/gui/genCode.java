@@ -37,8 +37,9 @@ public class genCode {
             public void mouseClicked(MouseEvent e) {
                 String mainName = textAtsName.getText();//调用方名称
                 String[] subName = textArea1.getText().split("/n");//被调用方名称
+                String packagePath = txtPackage.getText();
 
-                ATSimpl ats = new ATSimpl(mainName, txtPackage.getText());
+                ATSimpl ats = new ATSimpl(mainName, packagePath);
                 List<ACS> acsList = null;
                 for(String sub: subName){
                     System.out.println(sub);
