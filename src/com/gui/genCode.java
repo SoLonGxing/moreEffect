@@ -13,6 +13,8 @@ import com.xingpk.xiazhuji.xiazhujiRoot;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class genCode {
@@ -36,19 +38,23 @@ public class genCode {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String mainName = textAtsName.getText();//调用方名称
-                String[] subName = textArea1.getText().split("/n");//被调用方名称
+                String[] subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
                 String packagePath = txtPackage.getText();
+                List<String> ls = Arrays.asList(subName);
 
                 ATSimpl ats = new ATSimpl(mainName, packagePath);
-                List<ACS> acsList = null;
-                for(String sub: subName){
+                List<ACS> acsList = new ArrayList<ACS>();
+                for(String sub: ls){
                     System.out.println(sub);
-                     acsList.add(new ACSimpl(sub));
+                    //TODO 加数字开头的校验
+                    if (!sub.equals("")) {
+                        acsList.add(new ACSimpl(sub.trim(), packagePath));
+                    }
                 }
 
                 ats.setAcsList(acsList);
-                xiazhujiRoot xzjr = new xiazhujiRoot();
-                xzjr.setAts(ats);
+                xiazhujiRoot xzjr = new xiazhujiRoot(ats);
+                xzjr.testPrintFile();
 
                 super.mouseClicked(e);
             }
