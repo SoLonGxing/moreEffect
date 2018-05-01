@@ -89,8 +89,8 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
 
     public String makeCallString(ACS Acs, String indent) {
         ACSimpl ai = (ACSimpl)Acs;
-        String callString = "   //调用" + ai.getAcsClaccName() + "\n" +
-                "   " + ai.getAcsClaccName() + " " + ai.getInput().getVarName() + " = new " + ai.getAcsClaccName() + "();\n" +
+        String callString = "   //调用" + ai.getInput().getClassName() + "\n" +
+                "   " + ai.getInput().getClassName() + " " + ai.getInput().getVarName() + " = new " + ai.getInput().getVarName() + "();\n" +
                 "   CommonUtils.copyFromBean(data, " + ai.getInput().getVarName() + ");\n" +
                 "   OperationResponse<" + ai.getOutput().getClassName() + "> " + ai.getOutput().getVarName() + " = this.invokeService(\"" + ai.getServicName() + "\",\"\", " + ai.getInput().getVarName() + ");\n";
 
@@ -132,7 +132,6 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
     public void setServiceName(String serviceName) {
-
         this.serviceName = serviceName;
     }
 

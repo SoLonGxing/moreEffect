@@ -2,6 +2,7 @@ package com.xingpk.xiazhuji.intr;
 
 public interface ATS {
 
+    //返回ATS类的内容
     String printAtsClass();
 
 //    //生成Ats的reponse那一段
