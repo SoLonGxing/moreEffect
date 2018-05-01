@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="moreEffect">
+    <output-path>$PROJECT_DIR$/../../CODING/IntelliJ输出</output-path>
+    <root id="archive" name="moreEffect.jar">
+      <element id="module-output" name="moreEffect" />
+    </root>
+  </artifact>
+</component>

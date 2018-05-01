@@ -80,7 +80,9 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     public String makeResponseString() {
         String responseString = "   //生成输出\n" +
                 "   OperationResponse<" + this.output.getClassName() + "> response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
-                "   response.setData(new "+ this.output.getClassName() + "());\n\n";
+                "   response.setData(new "+ this.output.getClassName() + "());\n\n" +
+                "   response.getData().setTransOk(1);\n" +
+                "   response.getData().setErrcode(9999);\n";
         return responseString;
     }
 
@@ -109,7 +111,10 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
     public String makeEndString(){
-        return "    }\n" +
+        return "    response.setResult(OperationResult.SUCCESS);\n" +
+                "   response.getData().setTransOk(0);\n" +
+                "   return response;\n" +
+                "    }\n" +
                 "}";
     }
 

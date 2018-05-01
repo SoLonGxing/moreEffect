@@ -3,6 +3,7 @@ package com.gui;
 
 
 
+import com.sun.tools.javac.util.StringUtils;
 import com.xingpk.xiazhuji.ACSimpl;
 import com.xingpk.xiazhuji.ATSimpl;
 
@@ -11,6 +12,9 @@ import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.xiazhujiRoot;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ public class genCode {
     private JPanel jpbutton;
     private JComboBox comboBox1;
     private JTextField txtPackage;
+    private JButton ACSButton;
 
 
     public genCode() {
@@ -38,6 +43,12 @@ public class genCode {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String mainName = textAtsName.getText();//调用方名称
+                if (mainName.equals("")){
+                    textAtsName.setText("必输");
+                    textAtsName.setBackground(Color.red);
+                    return;
+
+                }
                 String[] subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
                 String packagePath = txtPackage.getText();
                 List<String> ls = Arrays.asList(subName);
@@ -46,8 +57,8 @@ public class genCode {
                 List<ACS> acsList = new ArrayList<ACS>();
                 for(String sub: ls){
                     System.out.println(sub);
-                    //TODO 加数字开头的校验
-                    if (!sub.equals("")) {
+                    //类名不能是空串或数字开头
+                    if (!sub.equals("") && !sub.substring(0,1).matches("[0-9]*")) {
                         acsList.add(new ACSimpl(sub.trim(), packagePath));
                     }
                 }
@@ -57,6 +68,15 @@ public class genCode {
                 xzjr.testPrintFile();
 
                 super.mouseClicked(e);
+            }
+        });
+
+        //设置如果main框输入了值则背景变白色
+        textAtsName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                textAtsName.setBackground(Color.white);
+                super.keyPressed(e);
             }
         });
     }
