@@ -37,11 +37,11 @@ public class BosIO implements IO{
 
     @Override
     public String getClassName() {
-        return null;
+        return this.className;
     }
 
     @Override
     public String getVarName() {
-        return null;
+        return this.varName;
     }
 }

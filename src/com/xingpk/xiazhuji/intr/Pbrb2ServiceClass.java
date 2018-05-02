@@ -12,4 +12,6 @@ public interface Pbrb2ServiceClass {
     String makeEndString();
     IO getInput();
     IO getOutput();
+    String getClassName();
+    String getServicName();
 }

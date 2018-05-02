@@ -22,6 +22,7 @@ public class ACSimpl implements ACS{
     private String serviceName;
     private String packagePath;
     private List<Pbrb2ServiceClass> bosList;
+    private String ioPath;
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
@@ -30,6 +31,7 @@ public class ACSimpl implements ACS{
     public ACSimpl(String name, String packagePath) {
         this.acsClassName = name.substring(0,1).toUpperCase() + name.substring(1,name.length());
         this.packagePath = packagePath + ".acs;";
+        this.ioPath = packagePath + ".io";
         setServiceName(name.substring(0,1).toLowerCase() + name.substring(1,name.length()));
 
         //建立输入输出
@@ -38,57 +40,82 @@ public class ACSimpl implements ACS{
         this.output = new AcsIO(name + "Output");
     }
 
-    public String makeAnnotationString(){
-        return "@AppComponentService(RouteKey=\"\" , Servicename=\"" + this.serviceName + "\";\n";
-    }
-
     @Override
     public String makeVarImportString(List list) {
-        return null;
+
+        String varImportString ="";
+        for(Pbrb2ServiceClass bos : bosList){
+//            ACSimpl ai = (ACSimpl)acs;
+            varImportString += "import " + this.ioPath + "." + bos.getInput().getClassName() + ";\n";
+            varImportString += "import " + this.ioPath + "." + bos.getOutput().getClassName() + ";\n";
+        }
+        varImportString += "\n";
+        return varImportString;
+    }
+
+    public String makeAnnotationString(){
+        return "@AppComponentService(RouteKey=\"\" , Servicename=\"" + this.serviceName + "\");\n";
     }
 
     public String makeBegainString(){
-        return "public class " + this.acsClassName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n\n";
+        return "public class " + this.acsClassName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n" +
+                "   @Override\n" +
+                "   protected OperationResponse<" + this.output.getClassName() + ">" + " response = new OperationResponse<" + this.input.getClassName() + " data) {\n" +
+                "\n";
     }
 
     public String makeResponseString() {
-        String responseString = "//生成输出\n" +
-                "OperationResponse<" + this.output.getClassName() + "> Response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n";
+        String responseString = "       //生成输出\n" +
+                "       OperationResponse<" + this.output.getClassName() + "> Response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
+                "       " + this.output.getClassName() + " " + this.output.getVarName() + " = new " + this.output.getClassName() + "();\n" +
+                "       response.setData(" + this.output.getVarName() + ");\n\n";
         return responseString;
     }
 
     @Override
-    public String makeCallString(Pbrb2ServiceClass serviceClass, String indent) {
-        return null;
+    public String makeCallString(Pbrb2ServiceClass bos, String indent) {
+        String callString = "       //调用" + bos.getInput().getClassName() + "\n" +
+                "       LogFactory.getDebugLog().debug(\"" + this.acsClassName + " calling " + bos.getClassName() + "\");\n" +
+                "       " + bos.getInput().getClassName() + " " + bos.getInput().getVarName() + " = new " + bos.getInput().getVarName() + "();\n" +
+                "       CommonUtils.copyFromBean(data, " + bos.getInput().getVarName() + ");\n" +
+                "       ActionResult<" + bos.getOutput().getClassName() + "> " + bos.getOutput().getVarName() + " = ServiceExcutor.executeService(\"" + bos.getServicName() + "\",\"\", " + bos.getInput().getVarName() + ");\n";
+
+        return callString;
     }
 
     @Override
-    public String makeFailString(Pbrb2ServiceClass serviceClass) {
-        return null;
+    public String makeFailString(Pbrb2ServiceClass bos) {
+        String failString = "       if(!" + bos.getOutput().getVarName() + ".isOk()){\n" +
+                "           FovaTx.setTxFail(response, " + bos.getOutput().getVarName() + ".getErrCode(), " + bos.getOutput().getVarName() + ".getCondition(), " + bos.getOutput().getVarName() + ".getFailProg());\n" +
+                "           return response;\n" +
+                "       }\n\n";
+
+        return failString;
     }
 
-    //call BOS TODO
-    public String makeCallString(String calledBosServiceName) {
 
-        return null;
-    }
-
-    //call BOS fail TODO
-    public String makeFailString(){
-        return null;
-    }
 
     public String makeEndString(){
-        return  "response.setResult(OperationResult.SUCCESS);\n" +
-                "return response;" +
+        return  "       response.setResult(OperationResult.SUCCESS);\n" +
+                "       return response;\n" +
                 "    }\n" +
                 "}";
     }
 
     @Override
     public String printAcsClass() {
-        String classStream =null;
-
+        String classStream ="";
+        classStream += this.packagePath;
+        classStream += this.importString;
+        classStream += makeVarImportString(this.bosList);
+        classStream += makeAnnotationString();
+        classStream += makeBegainString();
+        classStream += makeResponseString();
+        for (Pbrb2ServiceClass bos : bosList){
+            classStream += makeCallString(bos, "");
+            classStream += makeFailString(bos);
+        }
+        classStream += makeEndString();
         return classStream;
     }
 
@@ -133,6 +160,12 @@ public class ACSimpl implements ACS{
         return output;
     }
 
+    @Override
+    public String getClassName() {
+        return this.acsClassName;
+    }
+
+    @Override
     public String getServicName() {
         return serviceName;
     }

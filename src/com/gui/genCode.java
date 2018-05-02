@@ -1,5 +1,6 @@
 package com.gui;
 
+import com.xingpk.xiazhuji.GenACS;
 import com.xingpk.xiazhuji.GenATS;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -29,6 +30,15 @@ public class genCode {
             public void mouseClicked(MouseEvent e) {
                 GenATS genATS = new GenATS(textAtsName, textArea1, txtPackage);
                 genATS.letsDoIt();
+                super.mouseClicked(e);
+            }
+        });
+
+        ACSButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                GenACS genACS = new GenACS(textAtsName, textArea1, txtPackage);
+                genACS.letsDoIt();
                 super.mouseClicked(e);
             }
         });

@@ -103,6 +103,16 @@ public class BOSimpl implements BOS{
         return output;
     }
 
+    @Override
+    public String getClassName() {
+        return this.bosClassName;
+    }
+
+    @Override
+    public String getServicName() {
+        return this.serviceName;
+    }
+
     public String getServiceName() {
         return serviceName;
     }

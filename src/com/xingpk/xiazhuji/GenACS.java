@@ -3,8 +3,12 @@ package com.xingpk.xiazhuji;
 import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.intr.BOS;
 import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
+import com.xingpk.xiazhuji.util.DataCheck;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,13 +32,15 @@ public class GenACS {
     }
 
     public void letsDoIt(){
+        DataCheck dc = new DataCheck();
         //acs的名字
         this.mainName = textAtsName.getText().replace("\t","").replace(" ", "");//调用方名称
         //bos的名字们
         this.subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
         this.ls = Arrays.asList(subName);
+        this.packagePath = txtPackage.getText().replace("\t","").replace(" ", "");
 
-        if (checkInput()) {
+        if (dc.checkInput(textAtsName, textArea1, txtPackage, ls)) {
             ACSimpl acs = new ACSimpl(mainName, packagePath);
             List<Pbrb2ServiceClass> bosList = new ArrayList<Pbrb2ServiceClass>();
             for (String sub : ls) {
@@ -45,12 +51,11 @@ public class GenACS {
                 }
             }
             acs.setBosList(bosList);
-            acs.printAcsClass();
+            System.out.println(acs.printAcsClass());
         }
     }
 
-    private boolean checkInput(){
 
-        return true;
-    }
+
+
 }

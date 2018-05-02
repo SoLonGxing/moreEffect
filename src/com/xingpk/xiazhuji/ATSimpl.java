@@ -56,10 +56,6 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
         return classStream;
     }
 
-    public String makeAnnotationString(){
-        return "@AppTransactionService(inputClz = " + this.input.getClassName() + ".class, outputClz = " + this.output.getClassName() + ".class);\n";
-    }
-
     public String makeVarImportString(List<Pbrb2ServiceClass> ascList){
         String varImportString ="";
         for(Pbrb2ServiceClass acs : acsList){
@@ -71,6 +67,10 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
         return varImportString;
     }
 
+    public String makeAnnotationString(){
+        return "@AppTransactionService(inputClz = " + this.input.getClassName() + ".class, outputClz = " + this.output.getClassName() + ".class);\n";
+    }
+
     public String makeBegainString(){
         return  "public class " + this.atsClassName + " extends AbstractExposeService<" + this.input.getClassName() + ", " + this.output.getClassName() + "> implements I" + this.atsClassName + "{\n\n" +
                 "   @Override\n" +
@@ -79,42 +79,42 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
 
 
     public String makeResponseString() {
-        String responseString = "   //生成输出\n" +
-                "   OperationResponse<" + this.output.getClassName() + "> response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
-                "   response.setData(new "+ this.output.getClassName() + "());\n\n" +
-                "   response.getData().setTransOk(1);\n" +
-                "   response.getData().setErrcode(9999);\n";
+        String responseString = "       //生成输出\n" +
+                "       OperationResponse<" + this.output.getClassName() + "> response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
+                "       response.setData(new "+ this.output.getClassName() + "());\n" +
+                "       response.getData().setTransOk(1);\n" +
+                "       response.getData().setErrcode(9999);\n\n";
         return responseString;
     }
 
 
     public String makeCallString(Pbrb2ServiceClass Acs, String indent) {
-        ACSimpl ai = (ACSimpl)Acs;
-        String callString = "   //调用" + ai.getInput().getClassName() + "\n" +
-                "LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + ai.getAcsClassName() + "\");" +
-                "   " + ai.getInput().getClassName() + " " + ai.getInput().getVarName() + " = new " + ai.getInput().getVarName() + "();\n" +
-                "   CommonUtils.copyFromBean(data, " + ai.getInput().getVarName() + ");\n" +
-                "   OperationResponse<" + ai.getOutput().getClassName() + "> " + ai.getOutput().getVarName() + " = this.invokeService(\"" + ai.getServicName() + "\",\"\", " + ai.getInput().getVarName() + ");\n";
+//        ACSimpl ai = (ACSimpl)Acs;
+        String callString = "       //调用" + Acs.getInput().getClassName() + "\n" +
+                "       LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + Acs.getClassName() + "\");" +
+                "       " + Acs.getInput().getClassName() + " " + Acs.getInput().getVarName() + " = new " + Acs.getInput().getVarName() + "();\n" +
+                "       CommonUtils.copyFromBean(data, " + Acs.getInput().getVarName() + ");\n" +
+                "       OperationResponse<" + Acs.getOutput().getClassName() + "> " + Acs.getOutput().getVarName() + " = this.invokeService(\"" + Acs.getServicName() + "\",\"\", " + Acs.getInput().getVarName() + ");\n";
 
         return callString;
     }
 
 
     public String makeFailString(Pbrb2ServiceClass Acs) {
-        String failString = "   if (" + Acs.getOutput().getVarName() + ".getResult().compareTo(OperationResult.FAIL) == 0){\n" +
-                "       response.setResult(" + Acs.getOutput().getVarName() + ".getResult());\n" +
-                "       response.getData().setTransOk(1);\n" +
-                "       response.getData().setErrcode(Long.valueOf(" + Acs.getOutput().getVarName() + ".getErrorCode()));\n" +
-                "       response.getData().setTableName(" + Acs.getOutput().getVarName() + ".getMessage());\n" +
-                "       return response;\n" +
-                "   }\n\n";
+        String failString = "       if (" + Acs.getOutput().getVarName() + ".getResult().compareTo(OperationResult.FAIL) == 0){\n" +
+                "           response.setResult(" + Acs.getOutput().getVarName() + ".getResult());\n" +
+                "           response.getData().setTransOk(1);\n" +
+                "           response.getData().setErrcode(Long.valueOf(" + Acs.getOutput().getVarName() + ".getErrorCode()));\n" +
+                "           response.getData().setTableName(" + Acs.getOutput().getVarName() + ".getMessage());\n" +
+                "           return response;\n" +
+                "       }\n\n";
         return failString;
     }
 
     public String makeEndString(){
-        return "    response.setResult(OperationResult.SUCCESS);\n" +
-                "   response.getData().setTransOk(0);\n" +
-                "   return response;\n" +
+        return  "       response.setResult(OperationResult.SUCCESS);\n" +
+                "       response.getData().setTransOk(0);\n" +
+                "       return response;\n" +
                 "    }\n" +
                 "}";
     }
@@ -127,6 +127,16 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     @Override
     public IO getOutput() {
         return this.output;
+    }
+
+    @Override
+    public String getClassName() {
+        return this.atsClassName;
+    }
+
+    @Override
+    public String getServicName() {
+        return this.serviceName;
     }
 
     public List<Pbrb2ServiceClass> getAcsList() {

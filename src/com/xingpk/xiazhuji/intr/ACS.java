@@ -11,5 +11,4 @@ public interface ACS extends Pbrb2ServiceClass {
 //    //生成调用Bos的那一行
 //    String makeCallString(String calledBosServiceName);
 
-
 }
