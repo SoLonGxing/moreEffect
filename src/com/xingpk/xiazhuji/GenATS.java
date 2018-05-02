@@ -1,6 +1,7 @@
 package com.xingpk.xiazhuji;
 
 import com.xingpk.xiazhuji.intr.ACS;
+import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
 import org.jcp.xml.dsig.internal.MacOutputStream;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GenPBRB2 {
+public class GenATS {
     private JTextField textAtsName;
     private JTextArea textArea1;
     private JTextField txtPackage;
@@ -22,7 +23,7 @@ public class GenPBRB2 {
     private int legalFlag4AcsName = 0;
 
 
-    public GenPBRB2(JTextField textAtsName, JTextArea textArea1, JTextField txtPackage) {
+    public GenATS(JTextField textAtsName, JTextArea textArea1, JTextField txtPackage) {
         this.textAtsName = textAtsName;
         this.textArea1 = textArea1;
         this.txtPackage = txtPackage;
@@ -39,7 +40,7 @@ public class GenPBRB2 {
 
 
             ATSimpl ats = new ATSimpl(mainName, packagePath);
-            List<ACS> acsList = new ArrayList<ACS>();
+            List<Pbrb2ServiceClass> acsList = new ArrayList<Pbrb2ServiceClass>();
             for (String sub : ls) {
                 System.out.println(sub);
                 //类名不能是空串或数字开头

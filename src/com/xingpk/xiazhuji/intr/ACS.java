@@ -1,9 +1,9 @@
 package com.xingpk.xiazhuji.intr;
 
-public interface ACS {
+public interface ACS extends Pbrb2ServiceClass {
 
     //返回ACS类的内容
-    String printAtsClass();
+    String printAcsClass();
 
 //    //生成Acs的reponse那一行
 //    String makeResponseString();

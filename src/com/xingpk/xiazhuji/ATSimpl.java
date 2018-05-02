@@ -2,6 +2,7 @@ package com.xingpk.xiazhuji;
 
 import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.intr.IO;
+import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
 
 import java.util.List;
 
@@ -19,9 +20,8 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     private String atsClassName;
     private IO input;
     private IO output;
-    private List<ACS> acsList;
+    private List<Pbrb2ServiceClass> acsList;
     private String serviceName;
-
     private String packagePath;
     private String ioPath;
 
@@ -48,7 +48,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
         classStream += makeAnnotationString();
         classStream += makeBegainString();
         classStream += makeResponseString();
-        for (ACS acs : acsList){
+        for (Pbrb2ServiceClass acs : acsList){
             classStream += makeCallString(acs, "");
             classStream += makeFailString(acs);
         }
@@ -60,16 +60,17 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
         return "@AppTransactionService(inputClz = " + this.input.getClassName() + ".class, outputClz = " + this.output.getClassName() + ".class);\n";
     }
 
-    public String makeVarImportString(List<ACS> ascList){
+    public String makeVarImportString(List<Pbrb2ServiceClass> ascList){
         String varImportString ="";
-        for(ACS acs : acsList){
-            ACSimpl ai = (ACSimpl)acs;
-            varImportString += "import " + this.ioPath + "." + ai.getInput().getClassName() + ";\n";
-            varImportString += "import " + this.ioPath + "." + ai.getOutput().getClassName() + ";\n";
+        for(Pbrb2ServiceClass acs : acsList){
+//            ACSimpl ai = (ACSimpl)acs;
+            varImportString += "import " + this.ioPath + "." + acs.getInput().getClassName() + ";\n";
+            varImportString += "import " + this.ioPath + "." + acs.getOutput().getClassName() + ";\n";
         }
         varImportString += "\n";
         return varImportString;
     }
+
     public String makeBegainString(){
         return  "public class " + this.atsClassName + " extends AbstractExposeService<" + this.input.getClassName() + ", " + this.output.getClassName() + "> implements I" + this.atsClassName + "{\n\n" +
                 "   @Override\n" +
@@ -87,9 +88,10 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
 
-    public String makeCallString(ACS Acs, String indent) {
+    public String makeCallString(Pbrb2ServiceClass Acs, String indent) {
         ACSimpl ai = (ACSimpl)Acs;
         String callString = "   //调用" + ai.getInput().getClassName() + "\n" +
+                "LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + ai.getAcsClassName() + "\");" +
                 "   " + ai.getInput().getClassName() + " " + ai.getInput().getVarName() + " = new " + ai.getInput().getVarName() + "();\n" +
                 "   CommonUtils.copyFromBean(data, " + ai.getInput().getVarName() + ");\n" +
                 "   OperationResponse<" + ai.getOutput().getClassName() + "> " + ai.getOutput().getVarName() + " = this.invokeService(\"" + ai.getServicName() + "\",\"\", " + ai.getInput().getVarName() + ");\n";
@@ -98,13 +100,12 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
 
-    public String makeFailString(ACS Acs) {
-        ACSimpl ai = (ACSimpl)Acs;
-        String failString = "   if (" + ai.getOutput().getVarName() + ".getResult().compareTo(OperationResult.FAIL) == 0){\n" +
-                "       response.setResult(" + ai.getOutput().getVarName() + ".getResult());\n" +
+    public String makeFailString(Pbrb2ServiceClass Acs) {
+        String failString = "   if (" + Acs.getOutput().getVarName() + ".getResult().compareTo(OperationResult.FAIL) == 0){\n" +
+                "       response.setResult(" + Acs.getOutput().getVarName() + ".getResult());\n" +
                 "       response.getData().setTransOk(1);\n" +
-                "       response.getData().setErrcode(Long.valueOf(" + ai.getOutput().getVarName() + ".getErrorCode()));\n" +
-                "       response.getData().setTableName(" + ai.getOutput().getVarName() + ".getMessage());\n" +
+                "       response.getData().setErrcode(Long.valueOf(" + Acs.getOutput().getVarName() + ".getErrorCode()));\n" +
+                "       response.getData().setTableName(" + Acs.getOutput().getVarName() + ".getMessage());\n" +
                 "       return response;\n" +
                 "   }\n\n";
         return failString;
@@ -118,11 +119,21 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
                 "}";
     }
 
-    public List<ACS> getAcsList() {
+    @Override
+    public IO getInput() {
+        return this.input;
+    }
+
+    @Override
+    public IO getOutput() {
+        return this.output;
+    }
+
+    public List<Pbrb2ServiceClass> getAcsList() {
         return acsList;
     }
 
-    public void setAcsList(List<ACS> acsList) {
+    public void setAcsList(List<Pbrb2ServiceClass> acsList) {
 
         this.acsList = acsList;
     }

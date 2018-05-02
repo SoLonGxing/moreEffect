@@ -1,6 +1,6 @@
 package com.xingpk.xiazhuji.intr;
 
-public interface ATS {
+public interface ATS extends Pbrb2ServiceClass {
 
     //返回ATS类的内容
     String printAtsClass();

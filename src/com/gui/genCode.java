@@ -1,6 +1,6 @@
 package com.gui;
 
-import com.xingpk.xiazhuji.GenPBRB2;
+import com.xingpk.xiazhuji.GenATS;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,8 +27,8 @@ public class genCode {
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                GenPBRB2 genPBRB2 = new GenPBRB2(textAtsName, textArea1, txtPackage);
-                genPBRB2.letsDoIt();
+                GenATS genATS = new GenATS(textAtsName, textArea1, txtPackage);
+                genATS.letsDoIt();
                 super.mouseClicked(e);
             }
         });
@@ -45,5 +45,6 @@ public class genCode {
         gC.comboBox1.hide();
         gC.textArea1.setText("");
         frame.setVisible(true);
+        System.getProperties().getProperty("os.name").indexOf("abc");
     }
 }

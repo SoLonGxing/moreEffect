@@ -2,6 +2,9 @@ package com.xingpk.xiazhuji;
 
 import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.intr.IO;
+import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
+
+import java.util.List;
 
 public class ACSimpl implements ACS{
     private static String importString = "import com.fova.common.ActionResult;\n" +
@@ -12,24 +15,25 @@ public class ACSimpl implements ACS{
             "import com.icbc.stars.transaction.common.OperationResult;\n" +
             "import com.icbc.stars.transaction.common.OperationStage;\n" +
             "import com.icbc.stars.transaction.service.AbstractCommonService;\n\n";
-    private String annotation = "@AppComponentService(RouteKey=\"\" , Servicename=\"\";\n";
-    private String acsClaccName;
+    private String ioImportString;
+    private String acsClassName;
     private IO input;
     private IO output;
     private String serviceName;
     private String packagePath;
+    private List<Pbrb2ServiceClass> bosList;
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
 
     public ACSimpl(String name, String packagePath) {
-        this.acsClaccName = name.substring(0,1).toUpperCase() + name.substring(1,name.length());
+        this.acsClassName = name.substring(0,1).toUpperCase() + name.substring(1,name.length());
         this.packagePath = packagePath + ".acs;";
         setServiceName(name.substring(0,1).toLowerCase() + name.substring(1,name.length()));
 
         //建立输入输出
-        //TODO 是否要加"BOS"在结尾
+        //TODO 是否要加"ACS"在结尾
         this.input = new AcsIO(name + "Input");
         this.output = new AcsIO(name + "Output");
     }
@@ -38,15 +42,29 @@ public class ACSimpl implements ACS{
         return "@AppComponentService(RouteKey=\"\" , Servicename=\"" + this.serviceName + "\";\n";
     }
 
+    @Override
+    public String makeVarImportString(List list) {
+        return null;
+    }
+
     public String makeBegainString(){
-        return "public class " + this.acsClaccName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n\n";
+        return "public class " + this.acsClassName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n\n";
     }
 
     public String makeResponseString() {
         String responseString = "//生成输出\n" +
                 "OperationResponse<" + this.output.getClassName() + "> Response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n";
-
         return responseString;
+    }
+
+    @Override
+    public String makeCallString(Pbrb2ServiceClass serviceClass, String indent) {
+        return null;
+    }
+
+    @Override
+    public String makeFailString(Pbrb2ServiceClass serviceClass) {
+        return null;
     }
 
     //call BOS TODO
@@ -68,16 +86,23 @@ public class ACSimpl implements ACS{
     }
 
     @Override
-    public String printAtsClass() {
+    public String printAcsClass() {
         String classStream =null;
-
 
         return classStream;
     }
 
-    public void setAcsClaccName(String acsClaccName) {
+    public List<Pbrb2ServiceClass> getBosList() {
+        return bosList;
+    }
 
-        this.acsClaccName = acsClaccName;
+    public void setBosList(List<Pbrb2ServiceClass> bosList) {
+        this.bosList = bosList;
+    }
+
+    public void setAcsClassName(String acsClassName) {
+
+        this.acsClassName = acsClassName;
     }
 
     public void setInput(IO input) {
@@ -95,9 +120,9 @@ public class ACSimpl implements ACS{
         this.serviceName = servicName;
     }
 
-    public String getAcsClaccName() {
+    public String getAcsClassName() {
 
-        return acsClaccName;
+        return acsClassName;
     }
 
     public IO getInput() {
