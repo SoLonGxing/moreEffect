@@ -2,6 +2,8 @@ package com.gui;
 
 import com.xingpk.xiazhuji.GenACS;
 import com.xingpk.xiazhuji.GenATS;
+import com.xingpk.xiazhuji.doxml.MakeJavaFromXml;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,6 +24,7 @@ public class genCode {
     private JComboBox comboBox1;
     private JTextField txtPackage;
     private JButton ACSButton;
+    private JButton POSTButton;
 
 
     public genCode() {
@@ -39,6 +42,14 @@ public class genCode {
             public void mouseClicked(MouseEvent e) {
                 GenACS genACS = new GenACS(textAtsName, textArea1, txtPackage);
                 genACS.letsDoIt();
+                super.mouseClicked(e);
+            }
+        });
+        POSTButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MakeJavaFromXml mjfx = new MakeJavaFromXml(textArea1.getText());
+                textArea1.setText(mjfx.makePostJava());
                 super.mouseClicked(e);
             }
         });
