@@ -7,9 +7,11 @@ import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
 import java.util.List;
 
 public class ACSimpl implements ACS{
-    private static String importString = "import com.fova.common.ActionResult;\n" +
+    private static String importString = "import com.icbc.fova.common.ActionResult;\n" +
+            "import com.icbc.fova.annotation.AppComponentService;\n" +
+            "import com.icbc.cte.logging.LogFactory;\n" +
             "import com.icbc.fova.common.CommonUtils;\n" +
-            "import com.icbc.fova.common.ServiceExcutor;" +
+            "import com.icbc.fova.common.ServiceExcutor;\n" +
             "import com.icbc.fova.tx.FovaTx;\n" +
             "import com.icbc.stars.transaction.common.OperationResponse;\n" +
             "import com.icbc.stars.transaction.common.OperationResult;\n" +
@@ -30,7 +32,7 @@ public class ACSimpl implements ACS{
 
     public ACSimpl(String name, String packagePath) {
         this.acsClassName = name.substring(0,1).toUpperCase() + name.substring(1,name.length());
-        this.packagePath = packagePath + ".acs;";
+        this.packagePath = "package " + packagePath + ".acs;\n";
         this.ioPath = packagePath + ".io";
         setServiceName(name.substring(0,1).toLowerCase() + name.substring(1,name.length()));
 
@@ -54,19 +56,19 @@ public class ACSimpl implements ACS{
     }
 
     public String makeAnnotationString(){
-        return "@AppComponentService(RouteKey=\"\" , Servicename=\"" + this.serviceName + "\");\n";
+        return "@AppComponentService(RouteKey=\"\" , ServiceName=\"" + this.serviceName + "\")\n";
     }
 
     public String makeBegainString(){
         return "public class " + this.acsClassName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n" +
                 "   @Override\n" +
-                "   protected OperationResponse<" + this.output.getClassName() + ">" + " response = new OperationResponse<" + this.input.getClassName() + " data) {\n" +
+                "   protected OperationResponse<" + this.output.getClassName() + "> doExecute(" + this.input.getClassName() + " data){\n" +
                 "\n";
     }
 
     public String makeResponseString() {
         String responseString = "       //生成输出\n" +
-                "       OperationResponse<" + this.output.getClassName() + "> Response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
+                "       OperationResponse<" + this.output.getClassName() + "> response = new OperationResponse<" + this.output.getClassName() + ">(OperationStage.TRY, OperationResult.FAIL);\n" +
                 "       " + this.output.getClassName() + " " + this.output.getVarName() + " = new " + this.output.getClassName() + "();\n" +
                 "       response.setData(" + this.output.getVarName() + ");\n\n";
         return responseString;

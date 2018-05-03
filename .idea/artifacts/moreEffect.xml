@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/../../CODING/IntelliJ输出</output-path>
     <root id="archive" name="moreEffect.jar">
       <element id="module-output" name="moreEffect" />
+      <element id="library" level="project" name="jdom2-2.0.6" />
     </root>
   </artifact>
 </component>

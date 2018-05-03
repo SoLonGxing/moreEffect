@@ -128,8 +128,9 @@ public class BOSimpl implements BOS{
     private String packagePath;
     private String ioPath;
 
+
     @Override
-    public String printAtsClass() {
+    public String printBosClass() {
         return null;
     }
 }

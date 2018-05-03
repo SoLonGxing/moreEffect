@@ -1,5 +1,6 @@
 package com.xingpk.xiazhuji;
 
+import com.util.CommonUtil;
 import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
 import com.xingpk.xiazhuji.util.DataCheck;
@@ -31,7 +32,6 @@ public class GenATS {
 
     }
 
-
     public void letsDoIt(){
         this.mainName = textAtsName.getText().replace("\t","").replace(" ", "");//调用方名称
         this.subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
@@ -51,8 +51,10 @@ public class GenATS {
             }
 
             ats.setAcsList(acsList);
-            xiazhujiRoot xzjr = new xiazhujiRoot(ats);
-            xzjr.testPrintFile();
+            CommonUtil cu = new CommonUtil();
+            cu.genFile(ats.printAtsClass(), ats.getClassName() + ".java");
+            cu.genFile(ats.printIAtsClass(), "I" + ats.getClassName() + ".java");
+
         }
     }
 

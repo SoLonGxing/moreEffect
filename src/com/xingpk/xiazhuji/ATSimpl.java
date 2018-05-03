@@ -11,6 +11,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     private static String importString = "import com.icbc.fova.annotation.AppTransactionService;\n" +
             "import com.icbc.fova.common.ActionError;\n" +
             "import com.icbc.fova.common.CommonUtils;\n" +
+            "import com.icbc.cte.logging.LogFactory;\n" +
             "import com.icbc.fova.service.AbstractExposeService;\n" +
             "import com.icbc.stars.transaction.common.OperationResponse;\n" +
             "import com.icbc.stars.transaction.common.OperationResult;\n" +
@@ -28,7 +29,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
 
     public ATSimpl(String atsClassName, String packagePath){
         this.atsClassName = atsClassName.substring(0,1).toUpperCase() + atsClassName.substring(1, atsClassName.length());
-        this.packagePath = packagePath + ".ats;\n";
+        this.packagePath = "package " + packagePath + ".ats;\n\n";
         this.ioPath = packagePath + ".io";
         setServiceName(atsClassName.substring(0,1).toLowerCase() + atsClassName.substring(1, atsClassName.length()));
 
@@ -56,6 +57,16 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
         return classStream;
     }
 
+    public String printIAtsClass(){
+        String intrString = "";
+        intrString += this.packagePath;
+        intrString += "import com.icbc.fova.expose.IExposeService;\n\n";
+        intrString += "public interface I" + this.atsClassName + " extends IExposeService{\n\n}";
+
+
+        return  intrString;
+    }
+
     public String makeVarImportString(List<Pbrb2ServiceClass> ascList){
         String varImportString ="";
         for(Pbrb2ServiceClass acs : acsList){
@@ -68,7 +79,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     }
 
     public String makeAnnotationString(){
-        return "@AppTransactionService(inputClz = " + this.input.getClassName() + ".class, outputClz = " + this.output.getClassName() + ".class);\n";
+        return "@AppTransactionService(inputClz = " + this.input.getClassName() + ".class, outputClz = " + this.output.getClassName() + ".class)\n";
     }
 
     public String makeBegainString(){
@@ -91,7 +102,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
     public String makeCallString(Pbrb2ServiceClass Acs, String indent) {
 //        ACSimpl ai = (ACSimpl)Acs;
         String callString = "       //调用" + Acs.getInput().getClassName() + "\n" +
-                "       LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + Acs.getClassName() + "\");" +
+                "       LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + Acs.getClassName() + "\");\n" +
                 "       " + Acs.getInput().getClassName() + " " + Acs.getInput().getVarName() + " = new " + Acs.getInput().getVarName() + "();\n" +
                 "       CommonUtils.copyFromBean(data, " + Acs.getInput().getVarName() + ");\n" +
                 "       OperationResponse<" + Acs.getOutput().getClassName() + "> " + Acs.getOutput().getVarName() + " = this.invokeService(\"" + Acs.getServicName() + "\",\"\", " + Acs.getInput().getVarName() + ");\n";

@@ -1,5 +1,6 @@
 package com.xingpk.xiazhuji;
 
+import com.util.CommonUtil;
 import com.xingpk.xiazhuji.intr.ACS;
 import com.xingpk.xiazhuji.intr.BOS;
 import com.xingpk.xiazhuji.intr.Pbrb2ServiceClass;
@@ -52,6 +53,9 @@ public class GenACS {
             }
             acs.setBosList(bosList);
             System.out.println(acs.printAcsClass());
+            CommonUtil cu = new CommonUtil();
+            cu.genFile(acs.printAcsClass(), acs.getClassName() + ".java");
+//
         }
     }
 
