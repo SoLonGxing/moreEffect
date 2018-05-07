@@ -1,0 +1,144 @@
+package com.xingpk.xiazhuji.doCvs;
+
+import com.util.CommonUtil;
+import com.xingpk.xiazhuji.Column;
+import com.xingpk.xiazhuji.Table;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class GenDaoAndMapper {
+    private String filePathWithName;//带文件名的path
+    private String className;
+    private String mapperName;
+    private String packagePath;
+    private String boPath;
+    private String tableName;
+
+    private Table table;
+    private List<Column> columnList = new ArrayList<>();
+    private List<String> keyValue = new ArrayList<>();
+
+    public GenDaoAndMapper(String filePathWithName, String packagePath) {
+        this.filePathWithName = filePathWithName;
+        this.packagePath = packagePath + ".dao;\n\n";
+        this.tableName = filePathWithName.substring(filePathWithName.lastIndexOf("/")+1,filePathWithName.lastIndexOf("."));
+        this.mapperName = tableName + "Mapper";
+        this.className = CommonUtil.upperCaseFirstCharacter(tableName) + "Dao";
+        this.boPath = packagePath + ".bo." + this.tableName;
+    }
+
+    public void genDBFile(){
+        getDataFromXls();
+        genMapperFile();
+        genDaoFile();
+    }
+
+
+    public void genMapperFile() {
+        String IOJavaFileString = "";
+        IOJavaFileString += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        IOJavaFileString += "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n";
+        IOJavaFileString += "<mapper namespace=\"" + this.mapperName + "\">\n";
+
+        //resultmap
+        IOJavaFileString += "   <resultMap id=\"BaseResultMap\" type=\"" + this.boPath + "\">\n";
+
+        for(int i=0;i<table.getColumnList().size();i++){
+            String name = this.table.getColumnList().get(i).getName();
+            String type = this.table.getColumnList().get(i).getType();
+            String summary = this.table.getColumnList().get(i).getSummary();
+            IOJavaFileString += "       <result column=\"" + name.toUpperCase() + "\" jdbcType=\"" + type.toUpperCase() + "\" property=\"" + name.toLowerCase() + "\" />\n";
+        }
+        IOJavaFileString += "   </resultMap>\n";
+
+        //columnList
+        IOJavaFileString += "   <sql id=\"Base_Column_List\">\n";
+        IOJavaFileString += "   ";
+        IOJavaFileString += table.getUpperCaseColumnNameInSql().toLowerCase() + "\n";
+        IOJavaFileString += "   </sql>\n\n";
+
+
+        //insert
+        IOJavaFileString += "   <insert id=\"AP_ADD_" + this.tableName.toUpperCase() + "\" parameterType=\"" + this.boPath + "\">\n";
+        IOJavaFileString += "       insert into " + this.tableName.toLowerCase() + " (\n";
+        IOJavaFileString += table.getUpperCaseColumnNameInSql() + ")\n";
+        IOJavaFileString += "values " + table.getColumnWithTypeInSql();
+        IOJavaFileString += "   <insert>\n\n";
+
+        //
+
+    }
+
+    public void genDaoFile(){
+
+    }
+
+
+    private Table getDataFromXls(){
+        //从excel里读取数据
+        try
+        {
+            FileInputStream is =  new FileInputStream(filePathWithName);
+            HSSFWorkbook excel=new HSSFWorkbook(is);
+            //获取sheet1
+            //初始化表字段各List
+            HSSFSheet sheet1 = null;
+            sheet1 = excel.getSheetAt(0);//字段sheet
+
+            int rowNumber1 = sheet1.getPhysicalNumberOfRows();
+            for (int i =1;i<rowNumber1;i++)
+            {
+                HSSFRow row1 = sheet1.getRow(i);
+                if (!row1.getCell(0).getRichStringCellValue().toString().trim().equals("")) {
+                    /**
+                     * 0-字段英文名
+                     * 1-字段中文名
+                     * 2-说明
+                     * 3-类型+长度*/
+                    String typeAndLength = row1.getCell(3).getRichStringCellValue().toString().trim();
+
+                    Column column = new Column(row1.getCell(0).getRichStringCellValue().toString().trim(),
+                            typeAndLength.substring(0, typeAndLength.indexOf("(") == -1 ? typeAndLength.length() : typeAndLength.indexOf("(")),
+                            row1.getCell(1).getRichStringCellValue().toString().trim(),
+                            row1.getCell(2).getRichStringCellValue().toString().trim());
+                    columnList.add(column);
+
+//                    this.columnName.add(row1.getCell(0).getRichStringCellValue().toString().trim());
+//                    this.columnSummary.add(row1.getCell(1).getRichStringCellValue().toString().trim());
+//                    this.columnType.add(typeAndLength.substring(0, typeAndLength.indexOf("(") == -1 ? typeAndLength.length() : typeAndLength.indexOf("(")));
+                }
+            }
+
+            //初始化主键List
+            HSSFSheet sheet2 = excel.getSheetAt(1);//主键sheet
+            int rowNumber2 = sheet2.getPhysicalNumberOfRows();
+            HSSFRow row2 = sheet2.getRow(1);
+            for (int i =1;i<rowNumber2;i++)
+            {
+                HSSFCell cell3 = row2.getCell(3);
+                if (keyValue.size() > 0 && cell3.getRichStringCellValue().toString().indexOf("主键") != -1){
+                    String[] as =  row2.getCell(1).getRichStringCellValue().toString().split("/+");
+                    this.keyValue = CommonUtil.string2List(as);
+                }
+            }
+
+            table = new Table(this.tableName,columnList,keyValue);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+
+        return table;
+    }
+}

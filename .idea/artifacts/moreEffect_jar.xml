@@ -4,6 +4,7 @@
     <root id="archive" name="moreEffect.jar">
       <element id="module-output" name="moreEffect" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../CODING/libs/jdom2-2.0.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../CODING/libs/poi-3.1-FINAL.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

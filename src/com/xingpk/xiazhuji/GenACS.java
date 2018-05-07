@@ -53,8 +53,8 @@ public class GenACS {
             }
             acs.setBosList(bosList);
             System.out.println(acs.printAcsClass());
-            CommonUtil cu = new CommonUtil();
-            cu.genFile(acs.printAcsClass(), acs.getClassName() + ".java");
+            CommonUtil.genFile(acs.printAcsClass(), "", acs.getClassName() + ".java");
+
 //
         }
     }

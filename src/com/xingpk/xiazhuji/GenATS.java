@@ -51,9 +51,8 @@ public class GenATS {
             }
 
             ats.setAcsList(acsList);
-            CommonUtil cu = new CommonUtil();
-            cu.genFile(ats.printAtsClass(), ats.getClassName() + ".java");
-            cu.genFile(ats.printIAtsClass(), "I" + ats.getClassName() + ".java");
+            CommonUtil.genFile(ats.printAtsClass(), "",ats.getClassName() + ".java");
+            CommonUtil.genFile(ats.printIAtsClass(), "","I" + ats.getClassName() + ".java");
 
         }
     }
