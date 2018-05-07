@@ -37,45 +37,10 @@ public class GenDaoAndMapper {
 
     public void genDBFile(){
         getDataFromXls();
-        genMapperFile();
+        table.genMapperFile(boPath);
         genDaoFile();
     }
 
-
-    public void genMapperFile() {
-        String IOJavaFileString = "";
-        IOJavaFileString += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        IOJavaFileString += "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n";
-        IOJavaFileString += "<mapper namespace=\"" + this.mapperName + "\">\n";
-
-        //resultmap
-        IOJavaFileString += "   <resultMap id=\"BaseResultMap\" type=\"" + this.boPath + "\">\n";
-
-        for(int i=0;i<table.getColumnList().size();i++){
-            String name = this.table.getColumnList().get(i).getName();
-            String type = this.table.getColumnList().get(i).getType();
-            String summary = this.table.getColumnList().get(i).getSummary();
-            IOJavaFileString += "       <result column=\"" + name.toUpperCase() + "\" jdbcType=\"" + type.toUpperCase() + "\" property=\"" + name.toLowerCase() + "\" />\n";
-        }
-        IOJavaFileString += "   </resultMap>\n";
-
-        //columnList
-        IOJavaFileString += "   <sql id=\"Base_Column_List\">\n";
-        IOJavaFileString += "   ";
-        IOJavaFileString += table.getUpperCaseColumnNameInSql().toLowerCase() + "\n";
-        IOJavaFileString += "   </sql>\n\n";
-
-
-        //insert
-        IOJavaFileString += "   <insert id=\"AP_ADD_" + this.tableName.toUpperCase() + "\" parameterType=\"" + this.boPath + "\">\n";
-        IOJavaFileString += "       insert into " + this.tableName.toLowerCase() + " (\n";
-        IOJavaFileString += table.getUpperCaseColumnNameInSql() + ")\n";
-        IOJavaFileString += "values " + table.getColumnWithTypeInSql();
-        IOJavaFileString += "   <insert>\n\n";
-
-        //
-
-    }
 
     public void genDaoFile(){
 
