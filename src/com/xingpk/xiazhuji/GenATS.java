@@ -32,7 +32,7 @@ public class GenATS {
 
     }
 
-    public void letsDoIt(){
+    public boolean letsDoIt(){
         this.mainName = textAtsName.getText().replace("\t","").replace(" ", "");//调用方名称
         this.subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
         this.ls = Arrays.asList(subName);
@@ -53,8 +53,9 @@ public class GenATS {
             ats.setAcsList(acsList);
             CommonUtil.genFile(ats.printAtsClass(), "",ats.getClassName() + ".java");
             CommonUtil.genFile(ats.printIAtsClass(), "","I" + ats.getClassName() + ".java");
-
+            return true;
         }
+        return false;
     }
 
 

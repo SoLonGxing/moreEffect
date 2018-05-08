@@ -3,12 +3,14 @@ package com.gui;
 import com.util.CommonUtil;
 import com.xingpk.xiazhuji.GenACS;
 import com.xingpk.xiazhuji.GenATS;
+import com.xingpk.xiazhuji.doCvs.GenDaoAndMapper;
 import com.xingpk.xiazhuji.doCvs.GenIOJavaFile;
 import com.xingpk.xiazhuji.doxml.MakeJavaFromXml;
 import jdk.internal.util.xml.impl.Input;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -33,15 +35,20 @@ public class genCode {
     private JButton IOButton;
     private JButton fileButton;
     private JLabel result;
-
-
+    private JButton DBButton;
+    JFileChooser jfc=new JFileChooser();
+    File file=null;
     public genCode() {
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                result.setText("");
                 GenATS genATS = new GenATS(textAtsName, textArea1, txtPackage);
-                genATS.letsDoIt();
-                result.setText("DONE!");
+                if (genATS.letsDoIt()) {
+                    result.setText("DONE!");
+                }else{
+                    result.setText("GENERATE ERROR;");
+                }
                 super.mouseClicked(e);
             }
         });
@@ -49,9 +56,13 @@ public class genCode {
         ACSButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                result.setText("");
                 GenACS genACS = new GenACS(textAtsName, textArea1, txtPackage);
-                genACS.letsDoIt();
-                result.setText("DONE!");
+                if (genACS.letsDoIt()){
+                    result.setText("DONE!");
+                }else{
+                    result.setText("GENERATE ERROR;");
+                }
                 super.mouseClicked(e);
             }
         });
@@ -63,13 +74,57 @@ public class genCode {
                 super.mouseClicked(e);
             }
         });
+
+        //生成DAO和MAPPER
+        DBButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (txtPackage.getText().trim().equals("")){
+                    txtPackage.setText("IO文件包路径必输");
+                    txtPackage.setBackground(Color.red);
+                }
+
+                if (textAtsName.getText().trim().equalsIgnoreCase("")){
+                    textAtsName.setText("bo文件名必输");
+                    textAtsName.setBackground(Color.red);
+                }
+
+                GenDaoAndMapper gdam = new GenDaoAndMapper(file.getAbsolutePath(),txtPackage.getText().trim(),textAtsName.getText().trim());
+                gdam.genDBFile();
+
+                super.mouseClicked(e);
+            }
+        });
+
+        //生成IO文件
+        IOButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String packagePath = txtPackage.getText().trim();
+
+                if (packagePath.equals("")){
+                    txtPackage.setText("IO文件包路径必输");
+                    txtPackage.setBackground(Color.red);
+                }
+
+                if (null != file) {
+                    GenIOJavaFile gf = new GenIOJavaFile(file.getAbsolutePath(), txtPackage.getText());
+                    gf.genfile("Input");
+                    gf.genfile("Output");
+                    System.out.println(jfc.getSelectedFile().getName());
+                }
+                super.mouseClicked(e);
+            }
+        });
+
+        //文件按钮
         fileButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JFileChooser jfc=new JFileChooser();
                 jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
                 jfc.showDialog(new JLabel(), "选择xls文件");
-                File file=jfc.getSelectedFile();
+                file=jfc.getSelectedFile();
                 if(file.isDirectory()){
                     textArea1.setText("请选择xls文件！");
                 }else if(file.isFile()){
@@ -78,11 +133,6 @@ public class genCode {
                     }
                     textArea1.setText(file.getAbsolutePath());
                 }
-
-                GenIOJavaFile gf = new GenIOJavaFile(file.getAbsolutePath(), txtPackage.getText());
-                gf.genfile("Input");
-                gf.genfile("Output");
-                System.out.println(jfc.getSelectedFile().getName());
 
                 super.mouseClicked(e);
             }

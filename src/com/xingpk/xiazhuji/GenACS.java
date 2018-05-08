@@ -32,7 +32,7 @@ public class GenACS {
 
     }
 
-    public void letsDoIt(){
+    public boolean letsDoIt(){
         DataCheck dc = new DataCheck();
         //acs的名字
         this.mainName = textAtsName.getText().replace("\t","").replace(" ", "");//调用方名称
@@ -55,8 +55,11 @@ public class GenACS {
             System.out.println(acs.printAcsClass());
             CommonUtil.genFile(acs.printAcsClass(), "", acs.getClassName() + ".java");
 
+            return true;
 //
         }
+
+        return false;
     }
 
 

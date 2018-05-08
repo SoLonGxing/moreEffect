@@ -8,6 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
@@ -16,36 +17,27 @@ import java.util.List;
 
 public class GenDaoAndMapper {
     private String filePathWithName;//带文件名的path
-    private String className;
     private String mapperName;
+    private String beanName;
     private String packagePath;
-    private String boPath;
     private String tableName;
-
     private Table table;
     private List<Column> columnList = new ArrayList<>();
     private List<String> keyValue = new ArrayList<>();
 
-    public GenDaoAndMapper(String filePathWithName, String packagePath) {
+    public GenDaoAndMapper(String filePathWithName, String packagePath, String beanName) {
         this.filePathWithName = filePathWithName;
         this.packagePath = packagePath + ".dao;\n\n";
         this.tableName = filePathWithName.substring(filePathWithName.lastIndexOf("/")+1,filePathWithName.lastIndexOf("."));
-        this.mapperName = tableName + "Mapper";
-        this.className = CommonUtil.upperCaseFirstCharacter(tableName) + "Dao";
-        this.boPath = packagePath + ".bo." + this.tableName;
+        this.mapperName = CommonUtil.upperCaseFirstCharacter(beanName) + "Mapper";
+        this.beanName = beanName;
     }
 
     public void genDBFile(){
         getDataFromXls();
-        table.genMapperFile(boPath);
-        genDaoFile();
+        table.genMapperFile();
+        table.genDaoFile();
     }
-
-
-    public void genDaoFile(){
-
-    }
-
 
     private Table getDataFromXls(){
         //从excel里读取数据
@@ -73,7 +65,7 @@ public class GenDaoAndMapper {
                     Column column = new Column(row1.getCell(0).getRichStringCellValue().toString().trim(),
                             typeAndLength.substring(0, typeAndLength.indexOf("(") == -1 ? typeAndLength.length() : typeAndLength.indexOf("(")),
                             row1.getCell(1).getRichStringCellValue().toString().trim(),
-                            row1.getCell(2).getRichStringCellValue().toString().trim());
+                            row1.getCell(2) == null ? "" : row1.getCell(2).getRichStringCellValue().toString().trim());
                     columnList.add(column);
 
 //                    this.columnName.add(row1.getCell(0).getRichStringCellValue().toString().trim());
@@ -95,7 +87,7 @@ public class GenDaoAndMapper {
                 }
             }
 
-            table = new Table(this.tableName,columnList,keyValue);
+            table = new Table(this.tableName,this.beanName, packagePath, columnList,keyValue);
 
         }
         catch (Exception e)
