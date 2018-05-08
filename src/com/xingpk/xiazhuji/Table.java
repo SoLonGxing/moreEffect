@@ -26,6 +26,7 @@ public class Table {
         this.columnList = columnList;
         this.keyValue = keyValue;
         this.packagePath = packagePath;
+        setColumnWithoutPrimaryKey(null);
     }
 
     /**生成 where里的
@@ -37,9 +38,9 @@ public class Table {
     public void setKeyColumnInWhere(String keyColumnInWhere) {
         for (int i =0;i<keyColumn.size()-1;i++){
             Column cl = this.keyColumn.get(i);
-            this.keyColumnInWhere += cl.getName().toUpperCase() + " = #{" + cl.getName().toLowerCase() + ", jdbcType=" + cl.getType().toUpperCase() + "}\nand";
+            this.keyColumnInWhere += cl.getName().toUpperCase() + " = #{" + cl.getName().toLowerCase() + ", jdbcType=" + cl.getType().toUpperCase() + "}\n          and ";
         }
-        Column endCl = this.keyColumn.get(this.keyColumn.size());
+        Column endCl = this.keyColumn.get(this.keyColumn.size()-1);
         this.keyColumnInWhere += endCl.getName().toUpperCase() + " = #{" + endCl.getName().toLowerCase() + ", jdbcType=" + endCl.getType().toUpperCase() + "}\n";
     }
 
@@ -97,7 +98,7 @@ public class Table {
         }
         String nameEnd = this.columnList.get(this.columnList.size()-1).getName();
         this.columnWithTypeAndIfNull4Insert += "              <if test=\"" + nameEnd.toLowerCase() + " != null\">\n";
-        this.columnWithTypeAndIfNull4Insert += "                  #{" + nameEnd.toLowerCase() + ", jdbcType=" + this.columnList.get(this.columnList.size()).getType().toUpperCase() + "}\n";
+        this.columnWithTypeAndIfNull4Insert += "                  #{" + nameEnd.toLowerCase() + ", jdbcType=" + this.columnList.get(this.columnList.size()-1).getType().toUpperCase() + "}\n";
         this.columnWithTypeAndIfNull4Insert += "              </if>\n";
     }
 
@@ -118,7 +119,7 @@ public class Table {
         }
         String nameEnd = this.columnList.get(this.columnList.size()-1).getName();
         this.columnWithTypeAndIfNull4Insert += "              <if test=\"" + nameEnd.toLowerCase() + " != null\">\n";
-        this.columnWithTypeAndIfNull4Insert += "                  " + nameEnd.toUpperCase() + " = #{" + nameEnd.toLowerCase() + ", jdbcType=" + this.columnList.get(this.columnList.size()).getType().toUpperCase() + "}\n";
+        this.columnWithTypeAndIfNull4Insert += "                  " + nameEnd.toUpperCase() + " = #{" + nameEnd.toLowerCase() + ", jdbcType=" + this.columnList.get(this.columnList.size()-1).getType().toUpperCase() + "}\n";
         this.columnWithTypeAndIfNull4Insert += "              </if>\n";
     }
 
@@ -193,10 +194,21 @@ public class Table {
     public void setColumnWithoutPrimaryKey(List<Column> columnWithoutKey) {
         for(int i=0;i<columnList.size();i++){
             for (int j=0;j<keyValue.size();j++){
-                if (ifNotExistInList(keyValue.get(j),columnList)){
+                if (!keyValue.get(j).equalsIgnoreCase(columnList.get(i).getName())){
                     this.columnWithoutKey.add(columnList.get(i));
-                }else{
+
+                }
+            }
+        }
+        setColumnPrimaryKey(null);
+    }
+
+    public void setColumnPrimaryKey(List<Column> columnWithoutKey) {
+        for (int j=0;j<keyValue.size();j++){
+            for(int i=0;i<columnList.size();i++){
+                if (keyValue.get(j).equalsIgnoreCase(columnList.get(i).getName())){
                     this.keyColumn.add(columnList.get(i));
+                    continue;
                 }
             }
         }
@@ -219,7 +231,7 @@ public class Table {
         mapperXmlString += "<mapper namespace=\"" + this.beanName + "Mapper" + "\">\n";
 
         //resultmap
-        mapperXmlString += "   <resultMap id=\"BaseResultMap\" type=\"" + this.packagePath+ "." + this.beanName + "\">\n";
+        mapperXmlString += "   <resultMap id=\"BaseResultMap\" type=\"" + this.packagePath+ ".bo." + this.beanName + "\">\n";
 
         for(int i=0;i<columnList.size();i++){
             String name = columnList.get(i).getName();
@@ -240,20 +252,20 @@ public class Table {
         mapperXmlString += "   <insert id=\"insert" + CommonUtil.upperCaseFirstCharacter(this.tableName.toLowerCase()) + "\" parameterType=\"" + this.packagePath+ "." + this.beanName + "\">\n";
         mapperXmlString += "       insert into " + this.tableName.toLowerCase() + " (\n";
         mapperXmlString += this.getUpperCaseColumnNameInSql() + ")\n";
-        mapperXmlString += "values " + this.getColumnWithTypeInSql();
+        mapperXmlString += "values " + this.getColumnWithTypeInSql() + "\n";
         mapperXmlString += "   <insert>\n\n";
 
         //update
-        mapperXmlString += "   <update id=\"updateByPrimaryKey\" parameterType=\"" + this.packagePath+ "." + this.beanName + "\">\n";
+        mapperXmlString += "   <update id=\"updateByPrimaryKey\" parameterType=\"" + this.packagePath+ ".bo." + this.beanName + "\">\n";
         mapperXmlString += "       update " + this.tableName.toLowerCase() + "\n";
         mapperXmlString += "       <set>\n";
         mapperXmlString += "       " + this.getColumnWithTypeAndIfNull4Insert();
         mapperXmlString += "       </set>\n";
-        mapperXmlString += "       where" + this.getKeyColumnInWhere();
+        mapperXmlString += "       where " + this.getKeyColumnInWhere();
         mapperXmlString += "   </update>\n\n";
 
         //selete
-        mapperXmlString += "   <select id=\"selectByPrimaryKey\" parameterType=\"" + this.packagePath+ "." + this.beanName + "\" resultMap=\"BaseResultMap\">\n";
+        mapperXmlString += "   <select id=\"selectByPrimaryKey\" parameterType=\"" + this.packagePath+ ".bo." + this.beanName + "\" resultMap=\"BaseResultMap\">\n";
         mapperXmlString += "       select\n";
         mapperXmlString += "       <include refid=\"Base_Column_List\" />\n";
         mapperXmlString += "       from " + this.tableName + "\n";

@@ -82,11 +82,13 @@ public class genCode {
                 if (txtPackage.getText().trim().equals("")){
                     txtPackage.setText("IO文件包路径必输");
                     txtPackage.setBackground(Color.red);
+                    return;
                 }
 
                 if (textAtsName.getText().trim().equalsIgnoreCase("")){
                     textAtsName.setText("bo文件名必输");
                     textAtsName.setBackground(Color.red);
+                    return;
                 }
 
                 GenDaoAndMapper gdam = new GenDaoAndMapper(file.getAbsolutePath(),txtPackage.getText().trim(),textAtsName.getText().trim());
@@ -105,6 +107,7 @@ public class genCode {
                 if (packagePath.equals("")){
                     txtPackage.setText("IO文件包路径必输");
                     txtPackage.setBackground(Color.red);
+                    return;
                 }
 
                 if (null != file) {
@@ -127,9 +130,11 @@ public class genCode {
                 file=jfc.getSelectedFile();
                 if(file.isDirectory()){
                     textArea1.setText("请选择xls文件！");
+                    return;
                 }else if(file.isFile()){
                     if (jfc.getSelectedFile().getName().indexOf(".xls") == -1){
                         textArea1.setText("不是xls文件！");
+                        return;
                     }
                     textArea1.setText(file.getAbsolutePath());
                 }

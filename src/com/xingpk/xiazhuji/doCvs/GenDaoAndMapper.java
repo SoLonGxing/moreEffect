@@ -8,11 +8,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import javax.swing.*;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenDaoAndMapper {
@@ -27,7 +25,7 @@ public class GenDaoAndMapper {
 
     public GenDaoAndMapper(String filePathWithName, String packagePath, String beanName) {
         this.filePathWithName = filePathWithName;
-        this.packagePath = packagePath + ".dao;\n\n";
+        this.packagePath = packagePath;
         this.tableName = filePathWithName.substring(filePathWithName.lastIndexOf("/")+1,filePathWithName.lastIndexOf("."));
         this.mapperName = CommonUtil.upperCaseFirstCharacter(beanName) + "Mapper";
         this.beanName = beanName;
@@ -77,12 +75,12 @@ public class GenDaoAndMapper {
             //初始化主键List
             HSSFSheet sheet2 = excel.getSheetAt(1);//主键sheet
             int rowNumber2 = sheet2.getPhysicalNumberOfRows();
-            HSSFRow row2 = sheet2.getRow(1);
-            for (int i =1;i<rowNumber2;i++)
+            HSSFRow row2 = sheet2.getRow(0);
+            for (int i =0;i<rowNumber2;i++)
             {
                 HSSFCell cell3 = row2.getCell(3);
-                if (keyValue.size() > 0 && cell3.getRichStringCellValue().toString().indexOf("主键") != -1){
-                    String[] as =  row2.getCell(1).getRichStringCellValue().toString().split("/+");
+                if (cell3.getRichStringCellValue().toString().indexOf("主键") != -1){
+                    String[] as =  row2.getCell(1).getRichStringCellValue().toString().split("\\+");
                     this.keyValue = CommonUtil.string2List(as);
                 }
             }
