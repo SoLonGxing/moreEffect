@@ -26,7 +26,7 @@ public class GenDaoAndMapper {
     public GenDaoAndMapper(String filePathWithName, String packagePath, String beanName) {
         this.filePathWithName = filePathWithName;
         this.packagePath = packagePath;
-        this.tableName = filePathWithName.substring(filePathWithName.lastIndexOf("/")+1,filePathWithName.lastIndexOf("."));
+        this.tableName = filePathWithName.substring(filePathWithName.lastIndexOf("\\")+1,filePathWithName.lastIndexOf("."));
         this.mapperName = CommonUtil.upperCaseFirstCharacter(beanName) + "Mapper";
         this.beanName = beanName;
     }
@@ -35,6 +35,7 @@ public class GenDaoAndMapper {
         getDataFromXls();
         table.genMapperFile();
         table.genDaoFile();
+        table.genBoFile();
     }
 
     private Table getDataFromXls(){

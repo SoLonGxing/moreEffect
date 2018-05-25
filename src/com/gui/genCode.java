@@ -6,6 +6,7 @@ import com.xingpk.xiazhuji.GenATS;
 import com.xingpk.xiazhuji.doCvs.GenDaoAndMapper;
 import com.xingpk.xiazhuji.doCvs.GenIOJavaFile;
 import com.xingpk.xiazhuji.doxml.MakeJavaFromXml;
+import com.xingpk.xiazhuji.dsfTest.DsfTester;
 import jdk.internal.util.xml.impl.Input;
 
 import javax.swing.*;
@@ -36,6 +37,8 @@ public class genCode {
     private JButton fileButton;
     private JLabel result;
     private JButton DBButton;
+    private JButton GOButton;
+    private JLabel filePath;
     JFileChooser jfc=new JFileChooser();
     File file=null;
     public genCode() {
@@ -114,7 +117,6 @@ public class genCode {
                     GenIOJavaFile gf = new GenIOJavaFile(file.getAbsolutePath(), txtPackage.getText());
                     gf.genfile("Input");
                     gf.genfile("Output");
-                    System.out.println(jfc.getSelectedFile().getName());
                 }
                 super.mouseClicked(e);
             }
@@ -129,15 +131,49 @@ public class genCode {
                 jfc.showDialog(new JLabel(), "选择xls文件");
                 file=jfc.getSelectedFile();
                 if(file.isDirectory()){
-                    textArea1.setText("请选择xls文件！");
+                    filePath.setText("请选择xls文件！");
                     return;
                 }else if(file.isFile()){
                     if (jfc.getSelectedFile().getName().indexOf(".xls") == -1){
-                        textArea1.setText("不是xls文件！");
+                        filePath.setText("不是xls文件！");
                         return;
                     }
-                    textArea1.setText(file.getAbsolutePath());
+                    filePath.setText(file.getAbsolutePath());
                 }
+
+                super.mouseClicked(e);
+            }
+        });
+
+
+        GOButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                String group = textAtsName.getText().toUpperCase();
+                if (group.equals("")){
+                    JOptionPane.showMessageDialog(null, "main请输入组别", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String filePaht = file.getAbsolutePath();
+                if (filePaht.equals("")){
+                    JOptionPane.showMessageDialog(null, "请选择输入文件", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String address = txtPackage.getText();
+                if (address.equals("")){
+                    JOptionPane.showMessageDialog(null, "请在包路径输入服务器IP和端口", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String interfaceName = filePaht.substring(filePaht.lastIndexOf(CommonUtil.getSpilter())+1,filePaht.lastIndexOf("."));
+
+                DsfTester dsfTester = new DsfTester(address,group,interfaceName,filePaht);
+
+                textArea1.setText(dsfTester.getResult());
+
+//                JOptionPane.showMessageDialog(null, dsfTester.getResult(), "结果", JOptionPane.INFORMATION_MESSAGE);
 
                 super.mouseClicked(e);
             }

@@ -1,9 +1,12 @@
 package com.xingpk.xiazhuji;
 
+import com.diff.FunctionControllers;
 import com.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.util.CommonUtil.getColumnTypeCorrect;
 
 public class Table {
     private String tableName;
@@ -251,15 +254,15 @@ public class Table {
         //insert
         mapperXmlString += "   <insert id=\"insert" + CommonUtil.upperCaseFirstCharacter(this.tableName.toLowerCase()) + "\" parameterType=\"" + this.packagePath+ "." + this.beanName + "\">\n";
         mapperXmlString += "       insert into " + this.tableName.toLowerCase() + " (\n";
-        mapperXmlString += this.getUpperCaseColumnNameInSql() + ")\n";
-        mapperXmlString += "values " + this.getColumnWithTypeInSql() + "\n";
+        mapperXmlString += "        " + this.getUpperCaseColumnNameInSql() + ")\n";
+        mapperXmlString += "        values " + this.getColumnWithTypeInSql() + "\n";
         mapperXmlString += "   <insert>\n\n";
 
         //update
         mapperXmlString += "   <update id=\"updateByPrimaryKey\" parameterType=\"" + this.packagePath+ ".bo." + this.beanName + "\">\n";
         mapperXmlString += "       update " + this.tableName.toLowerCase() + "\n";
         mapperXmlString += "       <set>\n";
-        mapperXmlString += "       " + this.getColumnWithTypeAndIfNull4Insert();
+        mapperXmlString += "" + this.getColumnWithTypeAndIfNull4Insert();
         mapperXmlString += "       </set>\n";
         mapperXmlString += "       where " + this.getKeyColumnInWhere();
         mapperXmlString += "   </update>\n\n";
@@ -275,7 +278,12 @@ public class Table {
         //delete
 
         mapperXmlString += "</mapper>";
-        System.out.println(mapperXmlString);
+
+
+        if (FunctionControllers.genFileFlag)
+            CommonUtil.genFile(mapperXmlString, "DB/", beanName+"Mapper" + ".xml");
+        else
+            System.out.println(mapperXmlString);
     }
 
     public void genDaoFile() {
@@ -289,16 +297,17 @@ public class Table {
         daoJavaString += "import org.springframework.stereotype.Component;\n";
         daoJavaString += "import com.icbc.cte.logging.LogFactory;\n";
         daoJavaString += "import com.icbc.stars.mybatis.tx.LocalTransaction;\n";
-        //TODO bo的import
+        daoJavaString += "import " + this.packagePath + ".bo." + this.beanName + ";\n\n";
 
-        //TODO 注释部分
+        daoJavaString += CommonUtil.getAuthorString() + "\n\n";
+
 
         daoJavaString += "@Component\n";
         daoJavaString += "public class " + this.beanName + "Dao {\n";
 
         //insert方法
         daoJavaString += "  public boolean insert" + this.tableName.toUpperCase() + "(" + this.beanName + " param){\n";
-        daoJavaString += "      int rst = LocalTransaction.insert(\"" + this.beanName + "Mapper.insert\"" + CommonUtil.upperCaseFirstCharacter(this.tableName.toLowerCase()) + "\", param);\n";
+        daoJavaString += "      int rst = LocalTransaction.insert(\"" + this.beanName + "Mapper.insert" + CommonUtil.upperCaseFirstCharacter(this.tableName.toLowerCase()) + "\", param);\n";
         daoJavaString += "      if(rst==1){\n";
         daoJavaString += "          return true;\n";
         daoJavaString += "      }\n";
@@ -324,7 +333,60 @@ public class Table {
         //结束
         daoJavaString += "}\n";
 
-        System.out.println(daoJavaString);
+
+        if (FunctionControllers.genFileFlag)
+            CommonUtil.genFile(daoJavaString, "DB/", beanName+"Dao" + ".java");
+        else
+            System.out.println(daoJavaString);
+    }
+
+    public void genBoFile(){
+        String boFileString = "";
+        boFileString += "package " + this.packagePath + ".bo;\n\n";
+        boFileString += "import java.math.BigDecimal;\n";
+        boFileString += "import java.util.Date;\n";
+        boFileString += "import org.springframework.beans.factory.config.ConfigurableBeanFactory;\n";
+        boFileString += "import org.springframework.context.annotation.Scope;\n";
+        boFileString += "import org.springframework.stereotype.Component;\n\n";
+
+        boFileString += CommonUtil.getAuthorString() + "\n\n";
+
+        boFileString += "@Component\n";
+        boFileString += "@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)\n";
+        boFileString += "public class " + this.beanName + " {\n";
+
+        //声明
+        for (int i =0;i<columnList.size();i++){
+            boFileString += "   private " + getColumnTypeCorrect(columnList.get(i).getType()) + " " + columnList.get(i).getName().toLowerCase() + ";//" + columnList.get(i).getSummary() +"\n";
+        }
+
+        //getter && setter
+        for(int i = 0; i< this.columnList.size(); i++){
+            //getter
+            String name = this.columnList.get(i).getName().toLowerCase();
+            String type = getColumnTypeCorrect(this.columnList.get(i).getType());
+            boFileString += "   public " + type + " get" + CommonUtil.upperCaseFirstCharacter(name) + "() {\n";
+            boFileString += "       return " + name + ";\n";
+            boFileString += "   }\n\n";
+
+            //setter
+            boFileString += "   public void set" + CommonUtil.upperCaseFirstCharacter(name) + "(" + type + " " + name + ") {\n";
+            if (type.equals("String")) {
+                boFileString += "       this." + name + " = " + name + " == null ? null : " + name + ".trim();\n";
+            } else {
+                boFileString += "       this." + name + " = " + name + ";\n";
+            }
+            boFileString += "   }\n\n";
+        }
+        boFileString += "}\n\n";
+
+        if (FunctionControllers.genFileFlag)
+            CommonUtil.genFile(boFileString, "DB/", beanName + ".java");
+        else
+            System.out.println(boFileString);
 
     }
+
+
+
 }

@@ -57,6 +57,8 @@ public class CommonUtil {
             case "long": return "long";
             case "bigdecimal": return "BigDecimal";
             case "date": return "Date";
+            case "char": return "String";
+            case "decimal": return "BigDecimal";
             default: return columnTypeInput;
         }
     }
@@ -69,5 +71,34 @@ public class CommonUtil {
 
         return rtList;
 
+    }
+
+    public static  String getAuthorString(){
+        String authorString = "";
+        authorString += "//author " + System.getenv().get("USERNAME") + "\n";
+        return authorString ;
+    }
+
+    public static  String getSpilter(){
+        if (System.getProperties().getProperty("os.name").indexOf("Mac") == -1){
+            return "\\";
+        }else {
+            return "/";
+        }
+    }
+
+    public static String getStackTrace(Throwable throwable)
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+
+        try
+        {
+            throwable.printStackTrace(pw);
+            return sw.toString();
+        } finally
+        {
+            pw.close();
+        }
     }
 }
