@@ -37,9 +37,14 @@ public class ACSimpl implements ACS{
         setServiceName(name.substring(0,1).toLowerCase() + name.substring(1,name.length()));
 
         //建立输入输出
-        //TODO 是否要加"ACS"在结尾
-        this.input = new AcsIO(name + "Input");
-        this.output = new AcsIO(name + "Output");
+        //TODO 是否判断结尾有没有acs而加加上"ACS"在
+        String name4IO = name;
+        switch (name.toLowerCase()){
+            case "createremitnoteorderacs" :
+                name4IO = "CreateRemitSendNoteOrderACS";
+        }
+        this.input = new AcsIO(name4IO + "Input");
+        this.output = new AcsIO(name4IO + "Output");
     }
 
     @Override
@@ -63,6 +68,7 @@ public class ACSimpl implements ACS{
         return "public class " + this.acsClassName + " extends AbstractCommonService<" + this.input.getClassName() + ", " + this.output.getClassName() + ">{\n" +
                 "   @Override\n" +
                 "   protected OperationResponse<" + this.output.getClassName() + "> doExecute(" + this.input.getClassName() + " data){\n" +
+                "       this.setUseLocalTransaction(false);//不启用本地事务，直接使用ATS创建的事务\n" +
                 "\n";
     }
 
@@ -76,7 +82,7 @@ public class ACSimpl implements ACS{
 
     @Override
     public String makeCallString(Pbrb2ServiceClass bos, String indent) {
-        String callString = "       //调用" + bos.getInput().getClassName() + "\n" +
+        String callString = "       //调用" + bos.getServicName() + "\n" +
                 "       LogFactory.getDebugLog().debug(\"" + this.acsClassName + " calling " + bos.getClassName() + "\");\n" +
                 "       " + bos.getInput().getClassName() + " " + bos.getInput().getVarName() + " = new " + bos.getInput().getVarName() + "();\n" +
                 "       CommonUtils.copyFromBean(data, " + bos.getInput().getVarName() + ");\n" +

@@ -38,6 +38,10 @@ public class GenATS {
         this.ls = Arrays.asList(subName);
         this.packagePath = txtPackage.getText().replace("\t","").replace(" ", "");
 
+        if (!mainName.endsWith("ATS")){
+            mainName = mainName + "ATS";
+        }
+
         DataCheck dc = new DataCheck();
         if (dc.checkInput(textAtsName, textArea1, txtPackage, ls)) {
             ATSimpl ats = new ATSimpl(mainName, packagePath);
@@ -46,13 +50,18 @@ public class GenATS {
                 System.out.println(sub);
                 //类名不能是空串或数字开头
                 if (!sub.equals("")) {
+                    switch (sub.toLowerCase()){
+                        case "createremitsendnoteorderacs":
+                            sub = "CreateRemitNoteOrderACS";
+                    }
                     acsList.add(new ACSimpl(sub.trim(), packagePath));
                 }
             }
 
             ats.setAcsList(acsList);
-            CommonUtil.genFile(ats.printAtsClass(), "",ats.getClassName() + ".java");
-            CommonUtil.genFile(ats.printIAtsClass(), "","I" + ats.getClassName() + ".java");
+            String atsName = ats.getClassName();
+            CommonUtil.genFile(ats.printAtsClass(), "",atsName + ".java");
+            CommonUtil.genFile(ats.printIAtsClass(), "","I" + atsName + ".java");
             return true;
         }
         return false;

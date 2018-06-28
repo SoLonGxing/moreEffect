@@ -101,7 +101,7 @@ public class ATSimpl implements com.xingpk.xiazhuji.intr.ATS{
 
     public String makeCallString(Pbrb2ServiceClass Acs, String indent) {
 //        ACSimpl ai = (ACSimpl)Acs;
-        String callString = "       //调用" + Acs.getInput().getClassName() + "\n" +
+        String callString = "       //调用" + Acs.getServicName() + "\n" +
                 "       LogFactory.getDebugLog().debug(\"" + this.atsClassName + " calling " + Acs.getClassName() + "\");\n" +
                 "       " + Acs.getInput().getClassName() + " " + Acs.getInput().getVarName() + " = new " + Acs.getInput().getVarName() + "();\n" +
                 "       CommonUtils.copyFromBean(data, " + Acs.getInput().getVarName() + ");\n" +

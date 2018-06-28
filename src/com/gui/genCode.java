@@ -1,20 +1,28 @@
 package com.gui;
 
+
 import com.util.CommonUtil;
 import com.xingpk.xiazhuji.GenACS;
 import com.xingpk.xiazhuji.GenATS;
+import com.xingpk.xiazhuji.XzjVar;
+import com.xingpk.xiazhuji.analysis.CompareCamel;
+import com.xingpk.xiazhuji.analysis.ruleCheck.RuleChecker;
 import com.xingpk.xiazhuji.doCvs.GenDaoAndMapper;
 import com.xingpk.xiazhuji.doCvs.GenIOJavaFile;
 import com.xingpk.xiazhuji.doxml.MakeJavaFromXml;
 import com.xingpk.xiazhuji.dsfTest.DsfTester;
-import jdk.internal.util.xml.impl.Input;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class genCode {
@@ -24,10 +32,10 @@ public class genCode {
     private JTextArea textArea1;
     private JPanel jp1;
     private JPanel jp2;
-    private JLabel AtsName;
+    private JLabel MainLabel;
     private JPanel jp3;
     private JPanel jp4;
-    private JLabel AcsName;
+    private JLabel SubLabel;
     private JPanel jpbutton;
     private JComboBox comboBox1;
     private JTextField txtPackage;
@@ -38,8 +46,11 @@ public class genCode {
     private JLabel result;
     private JButton DBButton;
     private JButton GOButton;
-    private JLabel filePath;
-    JFileChooser jfc=new JFileChooser();
+    private JLabel lableFilePath;
+    private JButton compareButton;
+    private JButton checkButton;
+    static JFrame frame = new JFrame("genCode");
+    String fileType = "";
     File file=null;
     public genCode() {
         button1.addMouseListener(new MouseAdapter() {
@@ -127,18 +138,18 @@ public class genCode {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JFileChooser jfc=new JFileChooser();
-                jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
-                jfc.showDialog(new JLabel(), "选择xls文件");
+                jfc.setFileSelectionMode(JFileChooser.FILES_ONLY );
+                jfc.showDialog(new JLabel(), "选择xls文件或java文件");
                 file=jfc.getSelectedFile();
                 if(file.isDirectory()){
-                    filePath.setText("请选择xls文件！");
+                    lableFilePath.setText("请选择xls或java文件！");
                     return;
                 }else if(file.isFile()){
-                    if (jfc.getSelectedFile().getName().indexOf(".xls") == -1){
-                        filePath.setText("不是xls文件！");
+                    if (jfc.getSelectedFile().getName().indexOf(XzjVar.JAVAFILE) == -1 && jfc.getSelectedFile().getName().indexOf(XzjVar.XLSFILE) == -1){
+                        lableFilePath.setText("不是xls或java文件！");
                         return;
                     }
-                    filePath.setText(file.getAbsolutePath());
+                    lableFilePath.setText(file.getAbsolutePath());
                 }
 
                 super.mouseClicked(e);
@@ -178,10 +189,66 @@ public class genCode {
                 super.mouseClicked(e);
             }
         });
+
+        compareButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String filePath = lableFilePath.getText();
+                if (filePath.equals("")){
+                    JOptionPane.showMessageDialog(null, "请点击下方file按钮选择主文件", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+                JFileChooser jfc=new JFileChooser();
+                jfc.setFileSelectionMode(JFileChooser.FILES_ONLY );
+                jfc.showDialog(new JLabel(), "选择要对比的Bean文件");
+                file=jfc.getSelectedFile();
+                if(file.isDirectory()){
+                    lableFilePath.setText("请选择java文件！");
+                    return;
+                }else if(file.isFile()){
+                    if (jfc.getSelectedFile().getName().indexOf(XzjVar.JAVAFILE) == -1){
+                        lableFilePath.setText("不是java文件！");
+                        return;
+                    }
+                    textArea1.setText(file.getAbsolutePath());
+                }
+
+                textArea1.setText(textArea1.getText() + "\n" + new CompareCamel(filePath, file.getAbsolutePath()).getResult());
+
+                super.mouseClicked(e);
+            }
+        });
+
+        //代码规范检查
+        checkButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String filePath = lableFilePath.getText();
+                if (filePath.equals("")){
+                    JOptionPane.showMessageDialog(null, "请点击下方file按钮选择需要检查的文件", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (filePath.indexOf(XzjVar.JAVAFILE) == -1 && filePath.indexOf(XzjVar.XLSFILE) == -1){
+                    lableFilePath.setText("不是java或xml文件！");
+                    return;
+                }
+
+                Object[] obj2 ={ "ATS", "ACS", "BOS", "INPUT", "OUTPUT", "DAO", "BO" };
+                String fileType = (String)JOptionPane.showInputDialog(frame,"a","a",JOptionPane.PLAIN_MESSAGE,new ImageIcon(),obj2,"");
+
+
+                RuleChecker ruleChecker = new RuleChecker(filePath, fileType);
+                textArea1.setText(ruleChecker.checkIt());
+                super.mouseClicked(e);
+            }
+        });
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("genCode");
+
         genCode gC = new genCode();
         frame.setContentPane(gC.panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -192,6 +259,6 @@ public class genCode {
         gC.textArea1.setText("");
         gC.textArea1.setBorder(new LineBorder(new java.awt.Color(127,157,185), 1, false));
         frame.setVisible(true);
-        System.getProperties().getProperty("os.name").indexOf("abc");
+
     }
 }

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommonUtil {
-    private static String filePath4MAC = "~/Documents/";
-    private static String filePath4Win = "D:/moreEffect/下主机/";
+    private final static String filePath4MAC = "~/Documents/";
+    private final static String filePath4Win = "D:/moreEffect/下主机/";
 
     //生成文件
     public static void genFile(String fileString, String subPath, String fileName){
