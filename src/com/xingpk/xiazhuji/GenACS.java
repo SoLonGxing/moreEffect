@@ -36,6 +36,9 @@ public class GenACS {
         DataCheck dc = new DataCheck();
         //acs的名字
         this.mainName = textAtsName.getText().replace("\t","").replace(" ", "");//调用方名称
+        if (!mainName.endsWith("ACS") || !mainName.endsWith("Acs") || !mainName.endsWith("acs")){
+            mainName = mainName + "ACS";
+        }
         //bos的名字们
         this.subName = textArea1.getText().replace("\t","").replace(" ", "").split("\\n");//被调用方名称
         this.ls = Arrays.asList(subName);

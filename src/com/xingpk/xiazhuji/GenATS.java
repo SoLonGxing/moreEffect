@@ -38,7 +38,7 @@ public class GenATS {
         this.ls = Arrays.asList(subName);
         this.packagePath = txtPackage.getText().replace("\t","").replace(" ", "");
 
-        if (!mainName.endsWith("ATS")){
+        if (!mainName.endsWith("ATS") || !mainName.endsWith("Ats") || !mainName.endsWith("ats")){
             mainName = mainName + "ATS";
         }
 

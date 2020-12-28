@@ -12,7 +12,7 @@ import java.util.Scanner;
  *  在service项目中创建，程序包package命名参考com.icbc.应用名.业务对象.acs
  *2、服务定义
  *  （1）在service项目中创建，服务命名应为动词+业务对象的英文名+ACS   【无法检查动名词】
- *  （2）ACS服务必须继承基类AbstractExposeService或AbstractCompensateService，不支持柔性事务的继承AbstractExposeService，支持柔性事务的继承AbstractCompensateService
+ *  （2）ACS服务必须继承基类AbstractCommonService或AbstractCompensateService，不支持柔性事务的继承AbstractCommonService，支持柔性事务的继承AbstractCompensateService
  *  （3）ACS服务必须定义@AppComponentService标注，标注中填写路由主键值RouteKey、服务名ServiceName
  *3、服务IO
  *  （1）、在service项目中创建，报名使用com.icbc.应用名.业务对象.acs，类名参考服务类名Input、服务类名+Output   【在IO检查中做】
@@ -28,19 +28,21 @@ import java.util.Scanner;
  *        response和FovaTx
  * */
 public class CheckACS {
-    //所有flag，字典0-未检查，1-检查正常、2-检查不正常
-    private static int packageFlag = 0;//检查package是否正确
-    private static int nameFlag = 0;//检查名称是否正确
-    private static int extendsFlag = 0;//检查是否继承
-    private static int annotationFlag = 0;//检查标注是否正确
-    private static int doExcuteFlag = 0;//检查doExecute函数输入输出
-    private static int callBosFlag = 0;//检查调用bos书写是否正确
-    private static int afterCallBosFlag = 0;//检查调用bos后的检查是否正确
-    private static int ACSEnd = 0;//含茶acs结束的输出设置是否正确
-    private static String serviceName = "";
-    private static String ACSName = "";
+
 
     public static String check(String filePath, File file, String fileName) throws FileNotFoundException {
+        //所有flag，字典0-未检查，1-检查正常、2-检查不正常
+        int packageFlag = 0;//检查package是否正确
+        int nameFlag = 0;//检查名称是否正确
+        int extendsFlag = 0;//检查是否继承
+        int annotationFlag = 0;//检查标注是否正确
+        int doExcuteFlag = 0;//检查doExecute函数输入输出
+        int callBosFlag = 0;//检查调用bos书写是否正确
+        int afterCallBosFlag = 0;//检查调用bos后的检查是否正确
+        int ACSEnd = 0;//含茶acs结束的输出设置是否正确
+        String serviceName = "";
+        String ACSName = "";
+
         ACSName = fileName.substring(0, fileName.indexOf("."));
 
         serviceName = CommonUtil.lowerCaseFirstCharacter(ACSName);
@@ -86,11 +88,11 @@ public class CheckACS {
             //ACS服务必须继承基类AbstractExposeService或AbstractCompensateService，不支持柔性事务的继承AbstractExposeService，支持柔性事务的继承AbstractCompensateService
             if (extendsFlag == 0){
                 if (s1.contains("extends ")){
-                    if (s1.contains("AbstractExposeService") || s1.contains("AbstractCompensateService")){
+                    if (s1.contains("AbstractCommonService") || s1.contains("AbstractCompensateService")){
                         extendsFlag = 1;
                     }else{
                         extendsFlag = 2;
-                        checkResult.append(String.valueOf(errCount) + "、错误项目：ACS服务必须继承基类AbstractExposeService或AbstractCompensateService，不支持柔性事务的继承AbstractExposeService，支持柔性事务的继承AbstractCompensateService\n");
+                        checkResult.append(String.valueOf(errCount) + "、错误项目：ACS服务必须继承基类AbstractCommonService或AbstractCompensateService，不支持柔性事务的继承AbstractCommonService，支持柔性事务的继承AbstractCompensateService\n");
                         checkResult.append("  行号：" + line + "\n");
                         checkResult.append("  \n");
                         errCount++;
@@ -143,28 +145,31 @@ public class CheckACS {
                         errCount++;
                     }
 
-                    if (afterCallBosFlag == 0){
+                    if (afterCallBosFlag == 0 || afterCallBosFlag == 3){
+
                         String serviceCalling = s1;
+                        afterCallBosFlag = 3;
                         int maxLine = 0;
                         while (scan1.hasNext() && maxLine < 2) {
                             String s2 = scan1.nextLine();
                             maxLine++;
                             if (s2.contains("if") && s2.contains("{")) {
-                                if (s2.contains("isOK()")) {
+                                if (s2.contains("isOk()")) {
                                     afterCallBosFlag = 1;
-                                    break;
-                                } else {
-                                    afterCallBosFlag = 2;
-                                    checkResult.append(String.valueOf(errCount) + "、错误项目：调用acs后，需要进行状态判断\n");
-                                    checkResult.append("   调用服务:" + serviceCalling + "\n");
-                                    checkResult.append("  行号：" + line + "\n");
-                                    checkResult.append("  \n");
-                                    errCount++;
                                     break;
                                 }
                             }
-
                         }
+                        if (afterCallBosFlag == 1){
+                            continue;
+                        }
+                        afterCallBosFlag = 3;
+                        checkResult.append(String.valueOf(errCount) + "、错误项目：调用acs后，需要进行状态判断\n");
+                        checkResult.append("   调用服务:" + serviceCalling + "\n");
+                        checkResult.append("   行号：" + line + "\n");
+                        checkResult.append("  \n");
+                        errCount++;
+                        continue;
                     }
 
                     continue;
@@ -198,7 +203,6 @@ public class CheckACS {
             checkResult.append("  \n");
             errCount++;
         }
-
 
         checkResult.append("未成功进行检查项目：");
         int skipCount = 0;

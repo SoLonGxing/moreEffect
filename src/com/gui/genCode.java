@@ -2,8 +2,10 @@ package com.gui;
 
 
 import com.util.CommonUtil;
+import com.xingpk.octspbco.workflow.generate.SqlGenerator;
 import com.xingpk.xiazhuji.GenACS;
 import com.xingpk.xiazhuji.GenATS;
+import com.util.StatusReport;
 import com.xingpk.xiazhuji.XzjVar;
 import com.xingpk.xiazhuji.analysis.CompareCamel;
 import com.xingpk.xiazhuji.analysis.ruleCheck.RuleChecker;
@@ -11,7 +13,6 @@ import com.xingpk.xiazhuji.doCvs.GenDaoAndMapper;
 import com.xingpk.xiazhuji.doCvs.GenIOJavaFile;
 import com.xingpk.xiazhuji.doxml.MakeJavaFromXml;
 import com.xingpk.xiazhuji.dsfTest.DsfTester;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -21,13 +22,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class genCode {
     private JPanel panel1;
-    private JButton button1;
+    private JButton atsButton1;
     private JTextField textAtsName;
     private JTextArea textArea1;
     private JPanel jp1;
@@ -49,11 +48,15 @@ public class genCode {
     private JLabel lableFilePath;
     private JButton compareButton;
     private JButton checkButton;
+    private JPanel jpRight;
+    private JButton pubSqlButton;
+    private JButton PLATFORMButton;
+    private JTable table1;
     static JFrame frame = new JFrame("genCode");
-    String fileType = "";
     File file=null;
+
     public genCode() {
-        button1.addMouseListener(new MouseAdapter() {
+        atsButton1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 result.setText("");
@@ -84,7 +87,16 @@ public class genCode {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MakeJavaFromXml mjfx = new MakeJavaFromXml(textArea1.getText());
-                textArea1.setText(mjfx.makePostJava());
+                textArea1.setText(mjfx.makePostJava(1));
+                super.mouseClicked(e);
+            }
+        });
+
+        PLATFORMButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MakeJavaFromXml mjfx = new MakeJavaFromXml(textArea1.getText());
+                textArea1.setText(mjfx.makePostJava(2));
                 super.mouseClicked(e);
             }
         });
@@ -126,8 +138,16 @@ public class genCode {
 
                 if (null != file) {
                     GenIOJavaFile gf = new GenIOJavaFile(file.getAbsolutePath(), txtPackage.getText());
-                    gf.genfile("Input");
-                    gf.genfile("Output");
+                    StatusReport sr = gf.genfile("Input");
+                    if (sr.getIsOK() == 1){
+                        textArea1.setText(textArea1.getText() + sr.getMessage() + "\n" + sr.getClassName() + "\n");
+                        return;
+                    }
+                    StatusReport sr1 = gf.genfile("Output");
+                    if (sr.getIsOK() == 1){
+                        textArea1.setText(textArea1.getText() + sr1.getMessage() + "\n" + sr1.getClassName() + "\n");
+                        return;
+                    }
                 }
                 super.mouseClicked(e);
             }
@@ -168,6 +188,7 @@ public class genCode {
                 }
 
                 String filePaht = file.getAbsolutePath();
+
                 if (filePaht.equals("")){
                     JOptionPane.showMessageDialog(null, "请选择输入文件", "错误", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -245,6 +266,57 @@ public class genCode {
                 super.mouseClicked(e);
             }
         });
+
+
+        jpRight.addMouseListener(new MouseAdapter() {
+             @Override
+             public void mouseClicked(MouseEvent e) {
+                 if (e.isMetaDown()){
+                     JOptionPane.showMessageDialog(null, "请点击下方file按钮选择需要检查的文件", "错误", JOptionPane.ERROR_MESSAGE);
+                 }
+                 super.mouseClicked(e);
+             }
+        });
+
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (comboBox1.getSelectedItem().equals("DSF")){
+                    pubSqlButton.hide();
+
+                    atsButton1.show();
+                    ACSButton.show();
+                    POSTButton.show();
+                    IOButton.show();
+                    DBButton.show();
+                    GOButton.show();
+                    compareButton.show();
+                    checkButton.show();
+                }else{
+                    atsButton1.hide();
+                    ACSButton.hide();
+                    POSTButton.hide();
+                    IOButton.hide();
+                    DBButton.hide();
+                    GOButton.hide();
+                    compareButton.hide();
+                    checkButton.hide();
+
+                    pubSqlButton.show();
+                }
+            }
+        });
+        pubSqlButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                SqlGenerator sg = new SqlGenerator(file,"","");
+
+                sg.genIt();
+
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -254,11 +326,16 @@ public class genCode {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         //TODO combobox1 先隐藏，因为目前没有其他功能
-        gC.comboBox1.addItem("aa");
-        gC.comboBox1.hide();
+        gC.comboBox1.addItem("DSF");
+        gC.comboBox1.addItem("前后台");
+//        gC.comboBox1.hide();
+
+        gC.table1.hide();
+        //gC.textArea1.hide();
         gC.textArea1.setText("");
         gC.textArea1.setBorder(new LineBorder(new java.awt.Color(127,157,185), 1, false));
         frame.setVisible(true);
 
     }
+
 }

@@ -168,7 +168,9 @@ public class DsfTester {
             HttpPost httpPost = new HttpPost(url.trim());
 
             httpPost.setEntity(new StringEntity(data,"utf-8"));
-            httpPost.setHeader("Dsf-Group", this.group);
+            if(!"".equals(this.group) && this.group != null) {
+                httpPost.setHeader("Dsf-Group", this.group);
+            }
             HttpResponse response = httpClient.execute(httpPost);
 
 

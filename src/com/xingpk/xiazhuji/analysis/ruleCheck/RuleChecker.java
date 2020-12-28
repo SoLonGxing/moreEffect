@@ -64,13 +64,13 @@ public class RuleChecker {
                 case XzjVar.OUTPUT :
                     return CheckIO.check(this.filePath,this.file,this.filename);
                 case XzjVar.MAPPER :
-                    return "Can't check Mapper file;";
+                    return "Can't function Mapper file;";
                 case XzjVar.DAO :
                     return CheckDAO.check(this.filePath,this.file,this.filename);
                 case XzjVar.BO :
                     return CheckBO.check(this.filePath,this.file,this.filename);
                 default :
-                    return "Can't check this type of file;";
+                    return "Can't function this type of file;";
 
             }
         } catch (FileNotFoundException e) {

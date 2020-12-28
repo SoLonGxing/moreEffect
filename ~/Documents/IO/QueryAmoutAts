@@ -1,0 +1,33 @@
+package .io;
+
+import java.math.BigDecimal;
+import com.icbc.fova.io.OpeartionCommExt;
+
+public class QueryAmoutAtsOutput extends OperationCommExt {
+   private String infoWorkdate;//工作日期
+   private long infoTrxsqnb;//大交易序号
+   private BigDecimal infoAuthAmt;//授权金额
+
+
+   public String getInfoWorkdate() {
+       return infoWorkdate;
+   }
+   public void setInfoWorkdate(String infoWorkdate) {
+       this.infoWorkdate = infoWorkdate == null ? null : infoWorkdate.trim();
+   }
+
+   public long getInfoTrxsqnb() {
+       return infoTrxsqnb;
+   }
+   public void setInfoTrxsqnb(long infoTrxsqnb) {
+       this.infoTrxsqnb = infoTrxsqnb;
+   }
+
+   public BigDecimal getInfoAuthAmt() {
+       return infoAuthAmt;
+   }
+   public void setInfoAuthAmt(BigDecimal infoAuthAmt) {
+       this.infoAuthAmt = infoAuthAmt;
+   }
+
+}

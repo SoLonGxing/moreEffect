@@ -1,6 +1,7 @@
 package com.xingpk.xiazhuji.doCvs;
 
 import com.util.CommonUtil;
+import com.util.StatusReport;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -31,7 +32,7 @@ public class GenIOJavaFile {
         this.file = file;
     }
 
-    public void genfile(String ioType) {
+    public StatusReport genfile(String ioType) {
         String IOJavaFileString = "";
 
 
@@ -78,7 +79,7 @@ public class GenIOJavaFile {
                     }
                 }
             }else{
-                return;
+                return new StatusReport(1,"没有需要生成的参数:" + ioType,this.getClass().getName());
             }
 
             //从List生成字段声明
@@ -114,14 +115,15 @@ public class GenIOJavaFile {
             System.out.println(IOJavaFileString);
             CommonUtil.genFile(IOJavaFileString, subPath, className + ioType + ".java");
             CommonUtil.genFile(genMustInputCheckString(), subPath, className + "checkInput" + ".java");
+            return new StatusReport(0,"",this.getClass().getName());
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            IOJavaFileString = e.toString();
+            IOJavaFileString = CommonUtil.getStackTrace(e);
+            return new StatusReport(1,IOJavaFileString,this.getClass().getName());
 
         }
-
 
     }
 

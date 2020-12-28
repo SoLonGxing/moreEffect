@@ -44,6 +44,7 @@ public class GenDaoAndMapper {
         {
             FileInputStream is =  new FileInputStream(filePathWithName);
             HSSFWorkbook excel=new HSSFWorkbook(is);
+
             //获取sheet1
             //初始化表字段各List
             HSSFSheet sheet1 = null;

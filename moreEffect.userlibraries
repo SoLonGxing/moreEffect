@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="commons-logging-1.1.1">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/commons-logging-1.1.1.jar" />
+  </library>
+  <library name="fastjson-1.1.46">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/fastjson-1.1.46.jar" />
+  </library>
+  <library name="httpclient-4.1.2">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/httpclient-4.1.2.jar" />
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/httpcore-4.1.2.jar" />
+  </library>
+  <library name="httpcore-4.1.2">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/httpcore-4.1.2.jar" />
+  </library>
+  <library name="jdom2-2.0.6">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/jdom2-2.0.6.jar" />
+  </library>
+  <library name="poi-3.10-FINAL">
+    <archive path="/Users/xingpeikang/Documents/CODING/libs/poi-3.10-FINAL.jar" />
+  </library>
+</eclipse-userlibraries>
+

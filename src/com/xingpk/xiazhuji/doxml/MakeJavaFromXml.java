@@ -18,7 +18,9 @@ public class MakeJavaFromXml {
     }
 
 
-    public String makePostJava(){
+    public String makePostJava(int genFlag){
+        //genflag 1-按照标签名称生成标签   2-按照标签的name项生成(这时候固定按照标签name生成setText
+
         javaString = "";
         //解析xml文件
         Document doc = null;
@@ -34,32 +36,53 @@ public class MakeJavaFromXml {
         }
 
         Element root = doc.getRootElement();
+        String elementName = "";
+        if (genFlag == 2 ){
+            elementName = root.getAttributeValue("name");
+        }else{
+            elementName = root.getName();
+        }
+        javaString += "Document doc = new Document();\n";
+        javaString += "Element "+ elementName + " = new Element(\"" + elementName + "\");\n";
+        javaString += "doc" + ".setRootElement(" + elementName +");\n";
 
 
-        javaString += "Element "+ root.getName() + " = new Element(\"" + root.getName() + "\");\n";
-        javaString += root.getName() + ".setRootElement(root);\n";
-
-
-
-        elementName(root);
+        elementName(root,genFlag);
         return javaString;
     }
 
 
-    private void elementName(Element element){
+    private void elementName(Element element, int genFlag){
         if (!element.getName().equals("")) {
-            if (!element.getText().replace("\n","").trim().equals("")) {
-//                System.out.println(element.getName() + ".setText();");
-                javaString += element.getName() + ".setText();\n";
-            }
+            if (genFlag == 2 ){
 
+            }else {
+                if (!element.getText().replace("\n", "").trim().equals("")) {
+//                System.out.println(element.getName() + ".setText();");
+                    javaString += element.getName() + ".setText();\n";
+                }
+            }
+            String elementNameString = "";
             for(int i =0;i<element.getChildren().size();i++){
 //                System.out.println("Element " + element.getChildren().get(i).getName() + " = new Element(" + element.getChildren().get(i).getName() + ");");
 //                System.out.println(element.getName() + ".addContent(" + element.getChildren().get(i).getName() + ")");
-                javaString += "Element " + element.getChildren().get(i).getName() + " = new Element(\"" + element.getChildren().get(i).getName() + "\");\n";
-                elementName(element.getChildren().get(i));
-                javaString += element.getName() + ".addContent(" + element.getChildren().get(i).getName() + ")\n";
-            }
+                if(genFlag == 2) {
+                    elementNameString = element.getAttributeValue("name");
+
+                    String childElementName = element.getChildren().get(i).getAttributeValue("name");
+                    javaString += "Element " + childElementName + " = new Element(\"" + childElementName + "\");\n";
+                    javaString += childElementName + ".setText();\n";
+                    javaString += elementNameString + ".addContent(" + childElementName + ");\n";
+                    elementName(element.getChildren().get(i), genFlag);
+
+                }else{
+                    elementNameString = element.getChildren().get(i).getName();
+                    javaString += "Element " + elementNameString + " = new Element(\"" + elementNameString + "\");\n";
+                    elementName(element.getChildren().get(i), genFlag);
+                    javaString += element.getName() + ".addContent(" + elementNameString + ");\n";
+                }
+                }
+
         }
 
     }
