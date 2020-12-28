@@ -6,120 +6,12 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2874052d-73d8-45ed-8e6b-bee579351f25" name="Default" comment="add generate inputCheck() java">
-      <change beforePath="$PROJECT_DIR$/.classpath" afterPath="" />
+    <list default="true" id="2874052d-73d8-45ed-8e6b-bee579351f25" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/.project" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.classpath" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/artifacts/moreEffect_jar.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/compiler.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/description.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/dictionaries/xingpeikang.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/encodings.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/commons_logging_1_1_1.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/dom4j_1_6_1.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/fastjson_1_1_46.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/httpclient_4_1_2.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/httpcore_4_1_2.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/jdom2_2_0_6.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/poi_3_10_FINAL.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/poi_ooxml_3_9.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/libraries/xmlbeans_2_3_0.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/misc.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/modules.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/uiDesigner.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/vcs.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.idea/workspace.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/.project" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/META-INF/MANIFEST.MF" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/diff/FunctionControllers.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/diff/Parameters.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$10.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$11.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$12.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$13.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$4.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$5.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$6.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$7.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$8.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode$9.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/gui/genCode.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/AbstractLayout.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/DimensionInfo.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/GridConstraints.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/GridLayoutManager.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/HorizontalInfo.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/LayoutState.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/Spacer.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/SupportCode$TextWithMnemonic.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/SupportCode.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/Util.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/intellij/uiDesigner/core/VerticalInfo.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/util/CommonUtil.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/util/StatusReport.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/generate/SqlGenerator.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvt2pubtable/Pbco_intens_action.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvt2pubtable/Pbco_intens_nls.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvt2pubtable/Pbco_intens_status.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_bus_org_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_business.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_business_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_stat_trx_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_status_ctrl.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/prvttable/Pbco_intens_status_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_group.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_group_ctrl.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_group_member.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_organ.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_organ_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_vou_bus_rel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_vouth.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/octspbco/workflow/tables/pubtable/Pbco_intens_zone.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/ACSimpl.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/ATSimpl.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/AcsIO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/AtsIO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/BOSimpl.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/BosIO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/Column.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/GenACS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/GenATS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/Table.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/XzjVar.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/CompareCamel.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/callRelationship.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckACS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckATS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckBO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckBOS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckDAO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/CheckIO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/analysis/ruleCheck/RuleChecker.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/doCvs/GenDaoAndMapper.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/doCvs/GenIOJavaFile.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/doxml/MakeJavaFromXml.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/dsfTest/DsfTester.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/intr/ACS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/intr/ATS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/intr/BOS.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/intr/IO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/intr/Pbrb2ServiceClass.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/util/BeanAnalysis.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/util/DataCheck$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/util/DataCheck$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/util/DataCheck$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/util/DataCheck.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/com/xingpk/xiazhuji/xiazhujiRoot.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/files/InputExample.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/files/OutputExample.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/files/model.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/moreEffect.eml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/moreEffect.iml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/moreEffect/moreEffect.userlibraries" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/~/Documents/Aa.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/~/Documents/AabATS.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/~/Documents/IAabATS.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/~/Documents/IO/QueryAmoutAts" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -465,11 +357,6 @@
             </path>
             <path>
               <item name="moreEffect" type="b2602c69:ProjectViewProjectNode" />
-              <item name="moreEffect" type="462c0819:PsiDirectoryNode" />
-              <item name="files" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="moreEffect" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -667,7 +554,7 @@
       <workItem from="1549689514102" duration="852000" />
       <workItem from="1551853717835" duration="10000" />
       <workItem from="1607591507427" duration="1345000" />
-      <workItem from="1609150205684" duration="2847000" />
+      <workItem from="1609150205684" duration="3066000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1 complete genarate Ats，Acs &amp; IAts java file">
       <created>1525336715923</created>
@@ -718,11 +605,18 @@
       <option name="project" value="LOCAL" />
       <updated>1530148108949</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add generate inputCheck() java">
+      <created>1609154609445</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1609154609445</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270803000" />
+    <option name="totallyTimeSpent" value="271022000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="821" extended-state="0" />
