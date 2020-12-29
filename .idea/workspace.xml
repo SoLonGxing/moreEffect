@@ -6,9 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2874052d-73d8-45ed-8e6b-bee579351f25" name="Default" comment="add generate inputCheck() java">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="2874052d-73d8-45ed-8e6b-bee579351f25" name="Default" comment="add generate inputCheck() java" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -550,7 +548,7 @@
       <workItem from="1549689514102" duration="852000" />
       <workItem from="1551853717835" duration="10000" />
       <workItem from="1607591507427" duration="1345000" />
-      <workItem from="1609150205684" duration="3439000" />
+      <workItem from="1609150205684" duration="3642000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1 complete genarate Ats，Acs &amp; IAts java file">
       <created>1525336715923</created>
@@ -619,7 +617,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271395000" />
+    <option name="totallyTimeSpent" value="271598000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="821" extended-state="0" />
